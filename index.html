@@ -257,6 +257,18 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
 .toast{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:8px 13px;font-size:12px;font-weight:500;color:var(--text);box-shadow:0 5px 18px rgba(0,0,0,.4);animation:su .22s ease;display:flex;align-items:center;gap:7px;min-width:190px;}
 .toast.success{border-color:var(--success)}.toast.warning{border-color:var(--accent2)}.toast.error{border-color:var(--danger)}
 @keyframes su{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+
+/* COMPLETION POPUP */
+.done-overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);display:flex;align-items:center;justify-content:center;z-index:300;backdrop-filter:blur(6px);animation:fadeIn .25s ease;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.done-card{background:var(--surface);border:2px solid var(--success);border-radius:18px;padding:36px 30px;width:400px;max-width:92vw;text-align:center;box-shadow:0 0 50px rgba(91,232,138,.18);animation:popIn .32s cubic-bezier(.34,1.56,.64,1);}
+@keyframes popIn{from{opacity:0;transform:scale(.82)}to{opacity:1;transform:scale(1)}}
+.done-icon{font-size:56px;margin-bottom:14px;display:block;}
+.done-title{font-size:22px;font-weight:700;color:var(--success);margin-bottom:10px;}
+.done-name{font-size:16px;color:var(--text);margin-bottom:5px;font-weight:600;}
+.done-time{font-family:var(--mono);font-size:13px;color:var(--text-dim);margin-bottom:24px;}
+.done-btn{font-family:var(--sans);font-size:13px;font-weight:700;padding:12px 28px;border-radius:8px;border:none;background:var(--success);color:#0e0f13;cursor:pointer;transition:all .15s;width:100%;}
+.done-btn:hover{background:#7af5a8;}
 </style>
 </head>
 <body>
@@ -494,6 +506,17 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
   </div>
 </div>
 
+
+<!-- COMPLETION POPUP -->
+<div class="done-overlay" id="doneOverlay" style="display:none">
+  <div class="done-card">
+    <span class="done-icon">✅</span>
+    <div class="done-title">업무 완료!</div>
+    <div class="done-name" id="doneName"></div>
+    <div class="done-time" id="doneTime"></div>
+    <button class="done-btn" onclick="closeDonePopup()">확인</button>
+  </div>
+</div>
 <!-- Google Identity Services -->
 <script src="https://accounts.google.com/gsi/client" async></script>
 
@@ -996,7 +1019,11 @@ function startTick(){
     tasks.forEach(t=>{
       if(t.state==='running'){
         t.elapsed=(t.elapsed||0)+1; changed=true;
-        if(t.elapsed===t.duration){toast(`"${t.name}" 완료! ✅`,'success');doNotify(t.name);}
+        if(t.elapsed===t.duration){
+          t.state='done'; // 자동 정지
+          showDonePopup(t); // 완료 팝업
+          doNotify(t.name);
+        }
       }
     });
     if(changed){
@@ -1009,6 +1036,42 @@ function startTick(){
 function doNotify(name){
   if('Notification' in window&&Notification.permission==='granted')
     new Notification('타이머 완료',{body:`"${name}" 완료!`});
+}
+
+// ══════════════════════════════════════════
+//  COMPLETION POPUP + SOUND
+// ══════════════════════════════════════════
+function playDoneSound(){
+  try{
+    const ctx=new (window.AudioContext||window.webkitAudioContext)();
+    // Three pleasant chime notes
+    const notes=[523,659,784]; // C, E, G
+    notes.forEach((freq,i)=>{
+      const osc=ctx.createOscillator();
+      const gain=ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type='sine';
+      osc.frequency.value=freq;
+      const start=ctx.currentTime+i*0.18;
+      gain.gain.setValueAtTime(0,start);
+      gain.gain.linearRampToValueAtTime(0.4,start+0.04);
+      gain.gain.exponentialRampToValueAtTime(0.001,start+0.5);
+      osc.start(start); osc.stop(start+0.55);
+    });
+  }catch(e){}
+}
+
+function showDonePopup(task){
+  playDoneSound();
+  document.getElementById('doneName').textContent=task.name;
+  document.getElementById('doneTime').textContent='할당 시간 '+fmtT(task.duration)+' 완료';
+  document.getElementById('doneOverlay').style.display='flex';
+}
+
+function closeDonePopup(){
+  document.getElementById('doneOverlay').style.display='none';
+  saveTasks();
+  if(accessToken) syncToDrive();
 }
 
 // ══════════════════════════════════════════
