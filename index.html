@@ -821,13 +821,19 @@ function mergeRemote(remote) {
   });
   localStorage.setItem(K_HIST,JSON.stringify(merged));
 
-  // Merge recDefs: merge by id, prefer remote if newer
+  // Merge recDefs: merge by id first, then deduplicate by name (keep latest deadline)
   const localRecDefs=recDefs;
   const remoteRecDefs=remote.recDefs||[];
   const recMap={};
   localRecDefs.forEach(d=>recMap[d.id]=d);
   remoteRecDefs.forEach(d=>{ if(!recMap[d.id]) recMap[d.id]=d; }); // add remote-only
-  recDefs=Object.values(recMap);
+  // Deduplicate by name: if same name exists multiple times, keep the one with latest deadline
+  const nameMap={};
+  Object.values(recMap).forEach(d=>{
+    const key=d.name+'|||'+(d.category||'일반');
+    if(!nameMap[key] || d.deadline > nameMap[key].deadline) nameMap[key]=d;
+  });
+  recDefs=Object.values(nameMap);
   saveRecDefs();
 
   // Merge tasks for today: if remote has same day, take higher elapsed per task
@@ -835,14 +841,21 @@ function mergeRemote(remote) {
   if(remote.savedDate===today && remote.tasks) {
     const remTasks=remote.tasks;
     tasks.forEach(lt=>{
-      const rt=remTasks.find(r=>r.defId===lt.defId&&r.type===lt.type&&r.name===lt.name);
+      const rt=remTasks.find(r=>r.name===lt.name&&r.type===lt.type);
       if(rt && rt.elapsed>lt.elapsed) lt.elapsed=rt.elapsed;
     });
-    // Add remote tasks not in local
+    // Add remote tasks not in local (by name+type to avoid duplicates)
     remTasks.forEach(rt=>{
-      const exists=tasks.find(lt=>lt.name===rt.name&&lt.type===rt.type&&lt.defId===rt.defId);
+      const exists=tasks.find(lt=>lt.name===rt.name&&lt.type===rt.type);
       if(!exists) tasks.push({...rt,state:'idle',startedAt:null});
     });
+    // Final dedup: remove duplicate tasks with same name+type, keep highest elapsed
+    const taskMap={};
+    tasks.forEach(t=>{
+      const key=t.name+'|||'+t.type;
+      if(!taskMap[key] || t.elapsed>taskMap[key].elapsed) taskMap[key]=t;
+    });
+    tasks=Object.values(taskMap);
     saveTasks();
   }
 
@@ -881,6 +894,7 @@ function addRecTask() {
   if(!dl){toast('마감일을 설정하세요','warning');return;}
   if(dl<todayStr()){toast('마감일이 오늘보다 이전입니다','warning');return;}
   if(dur<=0){toast('일일 목표 시간을 설정하세요','warning');return;}
+  // Check duplicate by name (regardless of id)
   if(recDefs.find(r=>r.name===name&&r.deadline>=todayStr())){toast(`"${name}"은 이미 반복 업무로 등록되어 있습니다`,'warning');return;}
   const def={id:Date.now(),name,category:cat,deadline:dl,dailyDuration:dur,createdAt:todayStr()};
   recDefs.push(def); saveRecDefs();
@@ -897,7 +911,8 @@ function addRecTask() {
 function spawnRecInstance(def) {
   const today=todayStr();
   if(def.deadline<today) return;
-  if(tasks.find(t=>t.type==='recurring'&&t.defId===def.id)) return;
+  // Check by defId OR by name (prevent duplicates from pre-login entries)
+  if(tasks.find(t=>t.type==='recurring'&&(t.defId===def.id||t.name===def.name))) return;
   tasks.push({id:Date.now()+Math.random(),type:'recurring',defId:def.id,name:def.name,category:def.category,deadline:def.deadline,duration:def.dailyDuration,elapsed:0,state:'idle',startedAt:null});
 }
 
