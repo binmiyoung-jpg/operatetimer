@@ -975,8 +975,11 @@ function loadTasks() {
     tasks=r?JSON.parse(r):[];
     tasks.forEach(t=>{
       if(t.state==='running'&&t.startedAt){
-        t.elapsed=(t.elapsed||0)+Math.floor((Date.now()-t.startedAt)/1000);
+        // Catch up elapsed time that passed while page was closed/refreshed
+        const catchUp=Math.floor((Date.now()-t.startedAt)/1000);
+        t.elapsed=(t.elapsed||0)+catchUp;
         t.startedAt=Date.now();
+        t._baseElapsed=t.elapsed;
       }
     });
   }catch{tasks=[];}
@@ -1014,14 +1017,22 @@ function saveSnapshot() {
 // ══════════════════════════════════════════
 function startTick(){
   if(tick_id)clearInterval(tick_id);
+  // Use real clock diff so background tabs stay accurate
   tick_id=setInterval(()=>{
+    const now=Date.now();
     let changed=false;
     tasks.forEach(t=>{
-      if(t.state==='running'){
-        t.elapsed=(t.elapsed||0)+1; changed=true;
-        if(t.elapsed===t.duration){
-          t.state='done'; // 자동 정지
-          showDonePopup(t); // 완료 팝업
+      if(t.state==='running'&&t.startedAt){
+        // Calculate true elapsed from wall clock
+        const trueElapsed=t._baseElapsed+(Math.floor((now-t.startedAt)/1000));
+        const prev=t.elapsed||0;
+        t.elapsed=trueElapsed;
+        if(t.elapsed!==prev) changed=true;
+        // Check completion (fire only once at the crossing point)
+        if(prev<t.duration && t.elapsed>=t.duration){
+          t.elapsed=t.duration;
+          t.state='done';
+          showDonePopup(t);
           doNotify(t.name);
         }
       }
@@ -1031,7 +1042,7 @@ function startTick(){
       if(snapCnt>=30){saveTasks();if(accessToken)syncToDrive();snapCnt=0;}
       render(); updateSummary(); renderDayProg();
     }
-  },1000);
+  },500); // check every 0.5s for responsiveness
 }
 function doNotify(name){
   if('Notification' in window&&Notification.permission==='granted')
@@ -1081,7 +1092,9 @@ function startTask(id){
   tasks.forEach(t=>{if(t.state==='running')t.state='paused';});
   const t=tasks.find(t=>t.id===id);
   if(!t||t.elapsed>=t.duration)return;
-  t.state='running'; t.startedAt=Date.now();
+  t.state='running';
+  t.startedAt=Date.now();
+  t._baseElapsed=t.elapsed||0;
   saveTasks(); render(); updateSummary();
 }
 function pauseTask(id){const t=tasks.find(t=>t.id===id);if(!t)return;t.state='paused';saveTasks();render();updateSummary();}
@@ -1346,6 +1359,29 @@ function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').
 // ══════════════════════════════════════════
 //  EVENTS
 // ══════════════════════════════════════════
+// ══════════════════════════════════════════
+//  VISIBILITY CHANGE — catch up time when tab comes back
+// ══════════════════════════════════════════
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible'){
+    const now=Date.now();
+    let changed=false;
+    tasks.forEach(t=>{
+      if(t.state==='running'&&t.startedAt){
+        const trueElapsed=(t._baseElapsed||0)+Math.floor((now-t.startedAt)/1000);
+        if(trueElapsed!==t.elapsed){ t.elapsed=trueElapsed; changed=true; }
+        // Check completion after catch-up
+        if(t.elapsed>=t.duration){
+          const wasRunning=true;
+          t.elapsed=t.duration; t.state='done';
+          if(wasRunning){ showDonePopup(t); doNotify(t.name); }
+        }
+      }
+    });
+    if(changed){ render(); updateSummary(); renderDayProg(); saveTasks(); }
+  }
+});
+
 document.getElementById('rName').addEventListener('keydown',e=>{if(e.key==='Enter')addRecTask();});
 document.getElementById('dName').addEventListener('keydown',e=>{if(e.key==='Enter')addDayTask();});
 document.getElementById('movl').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
