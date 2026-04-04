@@ -570,7 +570,11 @@ function updateDateLbl() {
   document.getElementById('dateLbl').textContent=
     new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
 }
-function todayStr(){return new Date().toISOString().slice(0,10);}
+function todayStr(){
+  const d=new Date();
+  // Use local date (not UTC) — important for Korean timezone (UTC+9)
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
 function monthStr(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;}
 
 // ══════════════════════════════════════════
@@ -859,18 +863,19 @@ function mergeRemote(remote) {
   recDefs=Object.values(nameMap);
   saveRecDefs();
 
-  // Merge tasks for today: if remote has same day, take higher elapsed per task
+  // Merge tasks for today
   const today=todayStr();
   if(remote.savedDate===today && remote.tasks) {
     const remTasks=remote.tasks;
+    // Only merge tasks from same day — take higher elapsed
     tasks.forEach(lt=>{
       const rt=remTasks.find(r=>r.name===lt.name&&r.type===lt.type);
-      if(rt && rt.elapsed>lt.elapsed) lt.elapsed=rt.elapsed;
+      if(rt && rt.elapsed>lt.elapsed){ lt.elapsed=rt.elapsed; lt._baseElapsed=rt.elapsed; }
     });
     // Add remote tasks not in local (by name+type to avoid duplicates)
     remTasks.forEach(rt=>{
       const exists=tasks.find(lt=>lt.name===rt.name&&lt.type===rt.type);
-      if(!exists) tasks.push({...rt,state:'idle',startedAt:null});
+      if(!exists) tasks.push({...rt,state:'idle',startedAt:null,_baseElapsed:rt.elapsed||0});
     });
     // Final dedup: remove duplicate tasks with same name+type, keep highest elapsed
     const taskMap={};
@@ -879,6 +884,13 @@ function mergeRemote(remote) {
       if(!taskMap[key] || t.elapsed>taskMap[key].elapsed) taskMap[key]=t;
     });
     tasks=Object.values(taskMap);
+    saveTasks();
+  } else if(remote.savedDate && remote.savedDate!==today) {
+    // Remote data is from a different day — don't merge task elapsed times
+    // Just ensure recurring instances exist for today with fresh elapsed=0
+    tasks.forEach(t=>{
+      if(t.type==='recurring'&&t.elapsed>0){t.elapsed=0;t.state='idle';t.startedAt=null;t._baseElapsed=0;}
+    });
     saveTasks();
   }
 
@@ -986,14 +998,20 @@ function loadTasks() {
 }
 function checkNewDay() {
   const saved=localStorage.getItem(K_DATE), today=todayStr();
-  if(saved&&saved!==today){
+  if(saved && saved!==today){
+    // New day detected — reset timers
     saveSnapshot();
     tasks=tasks.filter(t=>t.type==='recurring');
-    tasks.forEach(t=>{t.elapsed=0;t.state='idle';t.startedAt=null;});
+    tasks.forEach(t=>{t.elapsed=0;t.state='idle';t.startedAt=null;t._baseElapsed=0;});
     tasks=tasks.filter(t=>t.deadline>=today);
+    localStorage.setItem(K_DATE, today); // update date immediately
     saveTasks();
-    toast('새 날 시작! 일일 업무 초기화됨 🌅','success');
+    toast('새 날 시작! 타이머가 초기화되었습니다 🌅','success');
+  } else if(!saved){
+    // First ever use — just set today
+    localStorage.setItem(K_DATE, today);
   }
+  // Spawn recurring instances for today
   recDefs.forEach(def=>{if(def.deadline>=todayStr())spawnRecInstance(def);});
 }
 
