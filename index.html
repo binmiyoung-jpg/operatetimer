@@ -886,11 +886,10 @@ function mergeRemote(remote) {
     tasks=Object.values(taskMap);
     saveTasks();
   } else if(remote.savedDate && remote.savedDate!==today) {
-    // Remote data is from a different day — don't merge task elapsed times
-    // Just ensure recurring instances exist for today with fresh elapsed=0
-    tasks.forEach(t=>{
-      if(t.type==='recurring'&&t.elapsed>0){t.elapsed=0;t.state='idle';t.startedAt=null;t._baseElapsed=0;}
-    });
+    // Remote data is from a different day
+    // Remove daily tasks, reset recurring elapsed
+    tasks=tasks.filter(t=>t.type==='recurring' && (t.deadline||'9999')>=today);
+    tasks.forEach(t=>{t.elapsed=0;t.state='idle';t.startedAt=null;t._baseElapsed=0;});
     saveTasks();
   }
 
@@ -1001,10 +1000,11 @@ function checkNewDay() {
   if(saved && saved!==today){
     // New day detected — reset timers
     saveSnapshot();
-    tasks=tasks.filter(t=>t.type==='recurring');
+    // Remove ALL daily tasks (one-day only)
+    // Keep only recurring tasks whose deadline hasn't passed
+    tasks=tasks.filter(t=>t.type==='recurring' && t.deadline>=today);
     tasks.forEach(t=>{t.elapsed=0;t.state='idle';t.startedAt=null;t._baseElapsed=0;});
-    tasks=tasks.filter(t=>t.deadline>=today);
-    localStorage.setItem(K_DATE, today); // update date immediately
+    localStorage.setItem(K_DATE, today);
     saveTasks();
     toast('새 날 시작! 타이머가 초기화되었습니다 🌅','success');
   } else if(!saved){
