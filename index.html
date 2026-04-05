@@ -29,25 +29,21 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
 
 /* ── 아이폰 전용 (430px 이하) ── */
 @media(max-width:430px){
-  /* 사이드바(업무 추가 폼) 완전히 숨김 */
+  /* 사이드바 숨김 */
   .sidebar{display:none !important;}
 
-  /* 헤더 간소화 */
+  /* 헤더 */
   .hdr{padding:10px 14px;flex-wrap:wrap;gap:6px;}
   .app-title{font-size:12px;}
   .date-lbl{font-size:10px;}
-  /* 탭은 유지하되 컴팩트하게 */
   .tabs{gap:2px;padding:3px;}
   .tab{font-size:11px;padding:5px 10px;min-height:36px;}
-  /* 동기화/초기화/로그 버튼 숨김 (모바일에서 불필요) */
   .hbtn{display:none;}
-  /* Google 로그인 버튼은 유지 */
   .auth-name{max-width:70px;}
 
-  /* 요약바 — 핵심 정보만 (진행시간, 현재진행 업무) */
+  /* 요약바 — 핵심만 */
   .sumbar{padding:0 14px;overflow-x:auto;}
   .si{padding:6px 10px;}
-  /* 예정시간·반복·일일 업무 수 숨김, 핵심만 표시 */
   .si:nth-child(1){display:none;}
   .si:nth-child(2){display:none;}
   .si:nth-child(3){display:none;}
@@ -56,29 +52,35 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
   .type-tabs{padding:8px 14px 0;}
   .type-tab{font-size:12px;padding:7px 14px;}
 
-  /* 타이머 카드 — 터치 친화적으로 */
+  /* 타이머 카드 — 2줄 구조 */
   .task-section{padding:10px 14px;}
-  .cbody{padding:12px 10px;gap:10px;}
-  .tname{font-size:14px;}
-  .tremain{font-size:22px;font-weight:600;}
+  .cbody{flex-wrap:wrap;padding:12px 12px 8px;gap:6px;}
+  .sdot{display:none;}
+
+  /* 1줄: 업무명 + 남은시간 나란히 */
+  .tinfo{flex:1;min-width:0;}
+  .tname{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .tmeta{flex-wrap:wrap;gap:4px;margin-top:3px;}
+  .tremain{font-size:22px;font-weight:700;}
   .tpct{font-size:11px;}
 
-  /* 조작 버튼 크게 */
-  .ibtn{width:38px;height:38px;font-size:14px;border-radius:8px;}
+  /* 2줄: 버튼 전체 너비로 */
+  .cacts{width:100%;justify-content:flex-end;gap:8px;padding-top:8px;border-top:1px solid var(--border);margin-top:2px;}
+  .ibtn{width:44px;height:44px;font-size:16px;border-radius:9px;}
   .ibtn.play{border-color:var(--success);color:var(--success);}
   .ibtn.stop{border-color:var(--accent2);color:var(--accent2);}
 
-  /* 완료 팝업 모바일 최적화 */
+  /* 완료 팝업 */
   .done-card{padding:28px 20px;width:92vw;}
   .done-icon{font-size:48px;}
   .done-title{font-size:20px;}
   .done-name{font-size:15px;}
 
-  /* 입력 필드 iOS 줌 방지 */
+  /* iOS 줌 방지 */
   .fi{font-size:16px !important;}
   input[type=text],input[type=number],input[type=date],select,textarea{font-size:16px !important;}
 
-  /* 통계 페이지 패딩 */
+  /* 통계 */
   .stats-tb{padding:10px 14px;}
   .sl-pane{padding:12px 14px;}
   .sr-pane{display:none;}
@@ -87,8 +89,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
   .tst-hdr>div:nth-child(4),.tst-hdr>div:nth-child(5),
   .tst-row>div:nth-child(4),.tst-row>div:nth-child(5){display:none;}
 }
-
-/* ── HEADER ── */
 .hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 18px;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0;gap:10px;}
 .hdr-left{display:flex;align-items:baseline;gap:10px;}
 .app-title{font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:.1em;color:var(--accent);text-transform:uppercase;}
