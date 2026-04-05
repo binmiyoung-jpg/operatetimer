@@ -2,7 +2,10 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="멀티타이머">
 <title>멀티 타이머</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Pretendard:wght@300;400;500;600;700&display=swap');
@@ -14,7 +17,39 @@
   --mono:'DM Mono',monospace;--sans:'Pretendard','Apple SD Gothic Neo',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh;display:flex;flex-direction:column;overflow:hidden;user-select:none;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden;user-select:none;-webkit-tap-highlight-color:transparent;}
+
+/* ── iOS SAFE AREA & MOBILE OPTIMIZATION ── */
+@supports(padding:env(safe-area-inset-top)){
+  .hdr{padding-top:calc(10px + env(safe-area-inset-top));padding-left:calc(18px + env(safe-area-inset-left));padding-right:calc(18px + env(safe-area-inset-right));}
+  .task-section{padding-bottom:calc(12px + env(safe-area-inset-bottom));}
+  .sl-pane{padding-bottom:calc(16px + env(safe-area-inset-bottom));}
+  .sr-pane{padding-bottom:calc(12px + env(safe-area-inset-bottom));}
+  #tcon{bottom:calc(20px + env(safe-area-inset-bottom));right:calc(16px + env(safe-area-inset-right));}
+}
+@media(max-width:430px){
+  .hdr{padding:10px 14px;}
+  .app-title{font-size:11px;}
+  .date-str{font-size:10px;}
+  .tabs{gap:2px;padding:3px;}
+  .tab-btn{font-size:11px;padding:7px 12px;min-height:36px;}
+  .sumbar{padding:0 14px;}
+  .sum-item{padding:9px 10px;font-size:11px;}
+  .type-tabs{padding:8px 14px 0;}
+  .tt-btn{font-size:11px;padding:5px 11px;}
+  .task-section{padding:10px 14px;}
+  .cbody{padding:10px;}
+  .cname{font-size:13px;}
+  .tbtn{min-width:40px;min-height:40px;font-size:16px;}
+  .tbtn-start{min-width:52px;min-height:40px;font-size:13px;}
+  .stats-tb{padding:10px 14px;}
+  .sl-pane{padding:12px 14px;}
+  .sr-pane{padding:12px 14px;}
+  .modal-box{margin:12px;border-radius:16px;max-height:calc(100dvh - 24px);overflow-y:auto;}
+  .sync-bar{padding:5px 14px;}
+  .fi{font-size:16px !important;}
+  input[type=text],input[type=number],input[type=date],select,textarea{font-size:16px !important;}
+}
 
 /* ── HEADER ── */
 .hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 18px;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0;gap:10px;}
@@ -581,11 +616,8 @@ function monthStr(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStar
 // ══════════════════════════════════════════
 //  CLIENT ID SETUP
 // ══════════════════════════════════════════
-const HARDCODED_CLIENT_ID = '778060689733-5bq056opc0b0mif9bc121f21j51m6s3u.apps.googleusercontent.com';
-
 function checkClientId() {
-  // Use hardcoded Client ID first, fallback to localStorage
-  const cid = HARDCODED_CLIENT_ID || localStorage.getItem(K_CLIENT);
+  const cid=localStorage.getItem(K_CLIENT);
   if(!cid) {
     // Show setup page instead of timer
     document.getElementById('page-timer').classList.remove('active');
@@ -593,8 +625,6 @@ function checkClientId() {
     document.getElementById('tab-timer').style.display='none';
     document.getElementById('tab-stats').style.display='none';
   } else {
-    // Auto-save to localStorage for consistency
-    localStorage.setItem(K_CLIENT, cid);
     initGoogleAuth(cid);
   }
 }
@@ -665,7 +695,7 @@ function setupManualOAuth(clientId) {
 }
 
 function googleSignInRedirect() {
-  const clientId=HARDCODED_CLIENT_ID||window._oauthClientId||localStorage.getItem(K_CLIENT);
+  const clientId=window._oauthClientId||localStorage.getItem(K_CLIENT);
   if(!clientId){ toast('Client ID가 없습니다','error'); return; }
   const redirectUri=encodeURIComponent(window.location.href.split('?')[0].split('#')[0]);
   const scope=encodeURIComponent(DRIVE_SCOPE+' https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email');
