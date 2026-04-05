@@ -557,6 +557,7 @@ function init() {
   renderDayProg();
   renderMonthLbl();
   setDefaultDeadline();
+  checkOAuthRedirectToken(); // handle iOS redirect OAuth return
   checkClientId();
   if('Notification' in window && Notification.permission==='default') Notification.requestPermission();
 }
@@ -619,28 +620,80 @@ function skipSetup() {
 //  GOOGLE AUTH (Google Identity Services)
 // ══════════════════════════════════════════
 let tokenClient=null;
+let gsiAttempts=0;
+const GSI_MAX=20; // try for 10 seconds
 
 function initGoogleAuth(clientId) {
-  if(!window.google){
-    // Wait for GSI to load
+  if(!window.google || !window.google.accounts){
+    gsiAttempts++;
+    if(gsiAttempts>=GSI_MAX){
+      // GSI failed to load — show manual OAuth fallback
+      console.warn('GSI failed to load, switching to manual OAuth');
+      setupManualOAuth(clientId);
+      return;
+    }
     setTimeout(()=>initGoogleAuth(clientId),500); return;
   }
-  tokenClient=google.accounts.oauth2.initTokenClient({
-    client_id: clientId,
-    scope: DRIVE_SCOPE,
-    callback: handleTokenResponse,
-  });
-  // Try restore token
-  const saved=sessionStorage.getItem(K_TOKEN);
-  if(saved){
-    accessToken=saved;
-    validateToken(accessToken);
+  gsiAttempts=0;
+  try {
+    tokenClient=google.accounts.oauth2.initTokenClient({
+      client_id: clientId,
+      scope: DRIVE_SCOPE,
+      callback: handleTokenResponse,
+      error_callback: (e)=>{ console.error('GSI error',e); setupManualOAuth(clientId); }
+    });
+  } catch(e) {
+    console.warn('GSI init failed:', e);
+    setupManualOAuth(clientId); return;
+  }
+  // Try restore token from storage
+  const saved=sessionStorage.getItem(K_TOKEN)||localStorage.getItem(K_TOKEN+'_persist');
+  if(saved){ accessToken=saved; validateToken(accessToken); }
+}
+
+// Manual OAuth flow for iOS/browsers where GSI popup is blocked
+function setupManualOAuth(clientId) {
+  window._oauthClientId=clientId;
+  // Change sign-in button to use redirect flow
+  const btn=document.getElementById('signInBtn');
+  if(btn){ btn.textContent='Google 로그인'; btn.onclick=googleSignInRedirect; }
+}
+
+function googleSignInRedirect() {
+  const clientId=window._oauthClientId||localStorage.getItem(K_CLIENT);
+  if(!clientId){ toast('Client ID가 없습니다','error'); return; }
+  const redirectUri=encodeURIComponent(window.location.href.split('?')[0].split('#')[0]);
+  const scope=encodeURIComponent(DRIVE_SCOPE+' https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email');
+  const url=`https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}&include_granted_scopes=true`;
+  window.location.href=url;
+}
+
+function checkOAuthRedirectToken() {
+  // Check if we're returning from OAuth redirect (token in URL hash)
+  const hash=window.location.hash;
+  if(!hash) return;
+  const params=new URLSearchParams(hash.replace('#',''));
+  const token=params.get('access_token');
+  if(token){
+    accessToken=token;
+    sessionStorage.setItem(K_TOKEN,token);
+    localStorage.setItem(K_TOKEN+'_persist',token);
+    // Clean URL hash
+    history.replaceState(null,null,window.location.pathname);
+    fetchUserInfo();
+    syncFromDrive();
+    setSyncStatus('ok');
+    document.getElementById('manualSyncBtn').style.display='';
+    toast('Google 로그인 완료! ☁','success');
   }
 }
 
 function googleSignIn() {
-  if(!tokenClient){ toast('Google API가 아직 로드되지 않았습니다','warning'); return; }
-  tokenClient.requestAccessToken();
+  if(tokenClient){
+    try{ tokenClient.requestAccessToken(); return; }
+    catch(e){ console.warn('tokenClient failed, using redirect'); }
+  }
+  googleSignInRedirect();
 }
 
 function googleSignOut() {
