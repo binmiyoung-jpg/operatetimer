@@ -30,18 +30,18 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
 @media(max-width:430px){
   .hdr{padding:10px 14px;}
   .app-title{font-size:11px;}
-  .date-str{font-size:10px;}
+  .date-lbl{font-size:10px;}
   .tabs{gap:2px;padding:3px;}
-  .tab-btn{font-size:11px;padding:7px 12px;min-height:36px;}
+  .tab{font-size:11px;padding:5px 10px;min-height:36px;}
   .sumbar{padding:0 14px;}
-  .sum-item{padding:9px 10px;font-size:11px;}
+  .si{padding:7px 10px;font-size:11px;}
   .type-tabs{padding:8px 14px 0;}
-  .tt-btn{font-size:11px;padding:5px 11px;}
+  .type-tab{font-size:11px;padding:5px 11px;}
   .task-section{padding:10px 14px;}
   .cbody{padding:10px;}
-  .cname{font-size:13px;}
-  .tbtn{min-width:40px;min-height:40px;font-size:16px;}
-  .tbtn-start{min-width:52px;min-height:40px;font-size:13px;}
+  .tname{font-size:13px;}
+  .ibtn{width:32px;height:32px;font-size:12px;}
+  .tremain{font-size:17px;}
   .stats-tb{padding:10px 14px;}
   .sl-pane{padding:12px 14px;}
   .sr-pane{padding:12px 14px;}
@@ -616,15 +616,17 @@ function monthStr(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStar
 // ══════════════════════════════════════════
 //  CLIENT ID SETUP
 // ══════════════════════════════════════════
+const HARDCODED_CLIENT_ID = '778060689733-5bq056opc0b0mif9bc121f21j51m6s3u.apps.googleusercontent.com';
+
 function checkClientId() {
-  const cid=localStorage.getItem(K_CLIENT);
+  const cid = HARDCODED_CLIENT_ID || localStorage.getItem(K_CLIENT);
   if(!cid) {
-    // Show setup page instead of timer
     document.getElementById('page-timer').classList.remove('active');
     document.getElementById('page-setup').style.display='flex';
     document.getElementById('tab-timer').style.display='none';
     document.getElementById('tab-stats').style.display='none';
   } else {
+    localStorage.setItem(K_CLIENT, cid);
     initGoogleAuth(cid);
   }
 }
@@ -695,7 +697,7 @@ function setupManualOAuth(clientId) {
 }
 
 function googleSignInRedirect() {
-  const clientId=window._oauthClientId||localStorage.getItem(K_CLIENT);
+  const clientId=HARDCODED_CLIENT_ID||window._oauthClientId||localStorage.getItem(K_CLIENT);
   if(!clientId){ toast('Client ID가 없습니다','error'); return; }
   const redirectUri=encodeURIComponent(window.location.href.split('?')[0].split('#')[0]);
   const scope=encodeURIComponent(DRIVE_SCOPE+' https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email');
