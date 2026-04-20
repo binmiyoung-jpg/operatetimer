@@ -318,38 +318,29 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
 .done-btn{font-family:var(--sans);font-size:13px;font-weight:700;padding:12px 28px;border-radius:8px;border:none;background:var(--success);color:#0e0f13;cursor:pointer;transition:all .15s;width:100%;}
 .done-btn:hover{background:#7af5a8;}
 
-/* ══ 오늘 시간 배분 패널 ══ */
+/* ══ 오늘 시간 배분 패널 (직접 입력) ══ */
 .alloc-panel{background:rgba(167,139,250,.04);border:1px solid rgba(167,139,250,.25);border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:8px;}
 .alloc-header{display:flex;align-items:center;justify-content:space-between;}
 .alloc-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);}
 .alloc-toggle{font-size:10px;color:var(--text-dim);cursor:pointer;background:none;border:1px solid var(--border);border-radius:4px;padding:2px 7px;transition:all .15s;}
 .alloc-toggle:hover{border-color:var(--purple);color:var(--purple);}
-.avail-row{display:flex;align-items:center;gap:5px;}
-.alloc-total-row{display:flex;justify-content:space-between;align-items:center;padding:5px 8px;border-radius:5px;background:var(--bg);}
-.alloc-total-lbl{font-size:10px;color:var(--text-muted);}
-.alloc-total-val{font-family:var(--mono);font-size:13px;font-weight:700;}
-.alloc-total-val.ok{color:var(--success);}
-.alloc-total-val.warn{color:var(--accent2);}
-.alloc-total-val.over{color:var(--danger);}
-.alloc-avail-display{font-family:var(--mono);font-size:10px;color:var(--text-muted);}
-.alloc-list{display:flex;flex-direction:column;gap:4px;max-height:210px;overflow-y:auto;}
+.alloc-list{display:flex;flex-direction:column;gap:5px;max-height:240px;overflow-y:auto;}
 .alloc-list::-webkit-scrollbar{width:3px;}
 .alloc-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
-.alloc-item{padding:6px 8px;background:var(--bg);border-radius:5px;border:1px solid var(--border);}
-.alloc-item-row{display:flex;align-items:center;gap:5px;}
-.alloc-item-name{font-size:11px;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
-.alloc-pct-wrap{display:flex;align-items:center;gap:3px;flex-shrink:0;}
-.alloc-item-pct{width:44px;font-family:var(--mono);font-size:12px;text-align:center;padding:3px 4px;border-radius:4px;border:1px solid var(--border);background:var(--surface2);color:var(--text);outline:none;}
-.alloc-item-pct:focus{border-color:var(--purple);}
-.alloc-pct-unit{font-size:10px;color:var(--text-muted);}
-.alloc-item-result{font-family:var(--mono);font-size:10px;color:var(--purple);min-width:40px;text-align:right;flex-shrink:0;}
-.alloc-bar{height:2px;background:var(--border);border-radius:1px;overflow:hidden;margin-top:4px;}
-.alloc-bar-fill{height:100%;background:var(--purple);border-radius:1px;transition:width .3s;}
+.alloc-item{padding:7px 8px;background:var(--bg);border-radius:5px;border:1px solid var(--border);}
+.alloc-item-name{font-size:11px;color:var(--text);margin-bottom:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.alloc-item-name span{font-size:9px;color:var(--text-muted);margin-left:4px;font-family:var(--mono);}
+.alloc-dur-row{display:flex;align-items:center;gap:4px;}
+.alloc-dur-input{width:44px;font-family:var(--mono);font-size:12px;text-align:center;padding:4px 4px;border-radius:4px;border:1px solid var(--border);background:var(--surface2);color:var(--text);outline:none;}
+.alloc-dur-input:focus{border-color:var(--purple);}
+.alloc-dur-lbl{font-size:10px;color:var(--text-muted);}
+.alloc-dur-total{font-family:var(--mono);font-size:10px;color:var(--purple);margin-left:auto;}
 .btn-alloc{font-family:var(--sans);font-size:11px;font-weight:700;padding:8px 12px;border-radius:6px;border:none;cursor:pointer;transition:all .15s;width:100%;background:var(--purple);color:#fff;}
 .btn-alloc:hover:not(:disabled){background:#c4b5fd;}
 .btn-alloc:disabled{opacity:.4;cursor:not-allowed;}
 .alloc-empty{font-size:11px;color:var(--text-muted);text-align:center;padding:10px 0;line-height:1.6;}
-.alloc-hint{font-size:10px;color:var(--text-muted);text-align:center;padding:3px 0;line-height:1.5;}
+.alloc-summary{display:flex;justify-content:space-between;align-items:center;padding:5px 8px;border-radius:5px;background:var(--bg);font-size:10px;color:var(--text-muted);}
+.alloc-summary span{font-family:var(--mono);font-size:12px;color:var(--success);}
 </style>
 </head>
 <body>
@@ -452,36 +443,20 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
       <!-- RECURRING -->
       <div class="sb-body" id="sb-rec">
 
-        <!-- ══ 오늘 시간 배분 패널 ══ -->
+        <!-- ══ 오늘 시간 배분 패널 (직접 입력) ══ -->
         <div class="alloc-panel" id="allocPanel">
           <div class="alloc-header">
-            <span class="alloc-title">⚖ 오늘 시간 배분</span>
+            <span class="alloc-title">⏱ 오늘 목표 시간</span>
             <button class="alloc-toggle" onclick="toggleAllocDetail()" id="allocToggleBtn">▾ 펼치기</button>
           </div>
           <div id="allocDetail" class="hidden">
-            <div class="fg" style="margin-bottom:6px">
-              <label class="fl">오늘 가용시간</label>
-              <div class="avail-row">
-                <input class="fi" id="availH" type="number" min="0" max="24" value="8"
-                  oninput="onAvailChange()"
-                  style="width:52px;text-align:center;font-family:var(--mono)">
-                <span style="font-size:11px;color:var(--text-muted)">시간</span>
-                <input class="fi" id="availM" type="number" min="0" max="59" value="0"
-                  oninput="onAvailChange()"
-                  style="width:52px;text-align:center;font-family:var(--mono)">
-                <span style="font-size:11px;color:var(--text-muted)">분</span>
-                <span class="alloc-avail-display" id="availDisplay">= 8h</span>
-              </div>
-            </div>
-            <div class="alloc-total-row" style="margin-bottom:6px">
-              <span class="alloc-total-lbl">비중 합계</span>
-              <span class="alloc-total-val warn" id="allocTotalVal">0%</span>
-            </div>
             <div class="alloc-list" id="allocList">
-              <div class="alloc-empty">반복 업무를 추가하면<br>여기서 비중을 설정할 수 있습니다</div>
+              <div class="alloc-empty">반복 업무를 추가하면<br>여기서 시간을 설정할 수 있습니다</div>
             </div>
-            <div class="alloc-hint" id="allocHint"></div>
-            <button class="btn-alloc" id="allocApplyBtn" onclick="applyAllocation()" disabled>⚖ 오늘 시간에 적용</button>
+            <div class="alloc-summary" id="allocSummary" style="margin-top:4px;display:none">
+              <span>오늘 총 목표</span><span id="allocSummaryVal">0h 0m</span>
+            </div>
+            <button class="btn-alloc" id="allocApplyBtn" onclick="applyAllocation()" disabled style="margin-top:6px">✅ 오늘 시간 적용</button>
           </div>
         </div>
 
@@ -613,31 +588,15 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
     <div class="mob-alloc-sheet-inner">
       <div class="mob-alloc-handle"></div>
       <button class="mob-alloc-close" onclick="closeMobAlloc()">✕</button>
-      <div class="mob-alloc-title">⚖ 오늘 시간 배분</div>
+      <div class="mob-alloc-title">⏱ 오늘 목표 시간 설정</div>
       <div class="mob-alloc-body">
-        <div class="fg">
-          <label class="fl">오늘 가용시간</label>
-          <div class="avail-row">
-            <input class="fi" id="mobAvailH" type="number" min="0" max="24" value="8"
-              oninput="onMobAvailChange()"
-              style="width:56px;text-align:center;font-family:var(--mono);font-size:16px">
-            <span style="font-size:12px;color:var(--text-muted)">시간</span>
-            <input class="fi" id="mobAvailM" type="number" min="0" max="59" value="0"
-              oninput="onMobAvailChange()"
-              style="width:56px;text-align:center;font-family:var(--mono);font-size:16px">
-            <span style="font-size:12px;color:var(--text-muted)">분</span>
-            <span style="font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-left:4px" id="mobAvailDisplay">= 8h</span>
-          </div>
+        <div class="alloc-list" id="mobAllocList" style="max-height:52vh">
+          <div class="alloc-empty">반복 업무를 추가하면<br>여기서 시간을 설정할 수 있습니다</div>
         </div>
-        <div class="alloc-total-row">
-          <span class="alloc-total-lbl">비중 합계</span>
-          <span class="alloc-total-val warn" id="mobAllocTotalVal">0%</span>
+        <div class="alloc-summary" id="mobAllocSummary" style="margin-top:4px;display:none">
+          <span>오늘 총 목표</span><span id="mobAllocSummaryVal">0h 0m</span>
         </div>
-        <div class="alloc-list" id="mobAllocList" style="max-height:45vh">
-          <div class="alloc-empty">반복 업무를 추가하면<br>여기서 비중을 설정할 수 있습니다</div>
-        </div>
-        <div class="alloc-hint" id="mobAllocHint"></div>
-        <button class="btn-alloc" id="mobAllocApplyBtn" onclick="applyMobAllocation()" disabled style="margin-top:4px;padding:12px">⚖ 오늘 시간에 적용</button>
+        <button class="btn-alloc" id="mobAllocApplyBtn" onclick="applyMobAllocation()" disabled style="margin-top:6px;padding:14px;font-size:14px">✅ 오늘 시간 적용</button>
       </div>
     </div>
   </div>
@@ -1226,371 +1185,240 @@ document.getElementById('rName').addEventListener('keydown',e=>{if(e.key==='Ente
 document.getElementById('dName').addEventListener('keydown',e=>{if(e.key==='Enter')addDayTask();});
 document.getElementById('movl').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
 
-// ══════════════════════════════════════════
-//  ⚖ 오늘 시간 배분 기능
-// ══════════════════════════════════════════
-let allocPcts = {}; // { taskId(string): pct(number) }
 
+// ══════════════════════════════════════════
+//  ⏱ 오늘 목표 시간 (직접 입력)
+// ══════════════════════════════════════════
+
+// { taskId(string): { h, m } }  — 세션 내 유지, dailyDuration에서 초기화
+let allocTimes = {};
+
+/* ── 공통: 현재 입력값 → 초 ── */
+function allocSec(key) {
+  const v = allocTimes[key];
+  if (!v) return 0;
+  return (parseInt(v.h) || 0) * 3600 + (parseInt(v.m) || 0) * 60;
+}
+
+/* ── 공통: recTask 목록 ── */
+function allocTasks() {
+  return tasks.filter(t => t.type === 'recurring' && t.state !== 'done');
+}
+
+/* ── 공통: allocTimes 초기화 (task 목록 변경 시) ── */
+function initAllocTimes() {
+  allocTasks().forEach(t => {
+    const key = String(t.id);
+    if (allocTimes[key] === undefined) {
+      // dailyDuration을 기본값으로
+      const dur = t.duration || 3600;
+      allocTimes[key] = { h: Math.floor(dur / 3600), m: Math.floor((dur % 3600) / 60) };
+    }
+  });
+  // 삭제된 task 정리
+  const valid = new Set(allocTasks().map(t => String(t.id)));
+  Object.keys(allocTimes).forEach(k => { if (!valid.has(k)) delete allocTimes[k]; });
+}
+
+/* ── 공통: 총합 계산 ── */
+function allocTotal() {
+  return allocTasks().reduce((s, t) => s + allocSec(String(t.id)), 0);
+}
+
+/* ────────────────────────────────────────
+   데스크탑 패널
+──────────────────────────────────────── */
 function toggleAllocDetail() {
   const detail = document.getElementById('allocDetail');
   const btn = document.getElementById('allocToggleBtn');
   const isHidden = detail.classList.toggle('hidden');
   btn.textContent = isHidden ? '▾ 펼치기' : '▴ 접기';
-  if (!isHidden) renderAllocList();
+  if (!isHidden) { initAllocTimes(); renderAllocList(); }
 }
 
 function refreshAllocIfOpen() {
   const detail = document.getElementById('allocDetail');
-  if (detail && !detail.classList.contains('hidden')) renderAllocList();
+  if (detail && !detail.classList.contains('hidden')) {
+    initAllocTimes(); renderAllocList();
+  }
 }
 
 function renderAllocList() {
-  const recTasks = tasks.filter(t => t.type === 'recurring' && t.state !== 'done');
   const list = document.getElementById('allocList');
   const applyBtn = document.getElementById('allocApplyBtn');
+  const summary = document.getElementById('allocSummary');
+  const summaryVal = document.getElementById('allocSummaryVal');
+  const tList = allocTasks();
 
-  if (!recTasks.length) {
-    list.innerHTML = '<div class="alloc-empty">반복 업무를 추가하면<br>여기서 비중을 설정할 수 있습니다</div>';
+  if (!tList.length) {
+    list.innerHTML = '<div class="alloc-empty">반복 업무를 추가하면<br>여기서 시간을 설정할 수 있습니다</div>';
     if (applyBtn) applyBtn.disabled = true;
-    updateAllocTotal();
+    if (summary) summary.style.display = 'none';
     return;
   }
 
-  // 신규 task에만 균등 배분값 부여 (기존 입력값은 유지)
-  const defaultPct = Math.floor(100 / recTasks.length);
-  recTasks.forEach((t, i) => {
+  list.innerHTML = tList.map(t => {
     const key = String(t.id);
-    if (allocPcts[key] === undefined) {
-      allocPcts[key] = (i === 0) ? 100 - defaultPct * (recTasks.length - 1) : defaultPct;
-    }
-  });
-
-  // 삭제된 task 정리
-  const validIds = new Set(recTasks.map(t => String(t.id)));
-  Object.keys(allocPcts).forEach(id => { if (!validIds.has(id)) delete allocPcts[id]; });
-
-  list.innerHTML = recTasks.map(t => {
-    const key = String(t.id);
-    const pct = allocPcts[key] !== undefined ? allocPcts[key] : 0;
-    const sec = calcAllocSec(pct);
-    const barW = Math.min(100, pct);
+    const v = allocTimes[key] || { h: 0, m: 0 };
     return `<div class="alloc-item">
-      <div class="alloc-item-row">
-        <span class="alloc-item-name" title="${esc(t.name)}">${esc(t.name)}</span>
-        <div class="alloc-pct-wrap">
-          <input class="alloc-item-pct" type="number" min="0" max="100" value="${pct}"
-            onchange="updateAllocPct('${key}', this.value)"
-            oninput="updateAllocPct('${key}', this.value)">
-          <span class="alloc-pct-unit">%</span>
-        </div>
-        <span class="alloc-item-result" id="alloc-res-${key}">${fmtAllocTime(sec)}</span>
+      <div class="alloc-item-name">${esc(t.name)}<span>현재 ${fmtHM(t.duration)}</span></div>
+      <div class="alloc-dur-row">
+        <input class="alloc-dur-input" type="number" min="0" max="23" value="${v.h}"
+          oninput="updateAllocTime('${key}','h',this.value)"
+          onchange="updateAllocTime('${key}','h',this.value)">
+        <span class="alloc-dur-lbl">시간</span>
+        <input class="alloc-dur-input" type="number" min="0" max="59" value="${v.m}"
+          oninput="updateAllocTime('${key}','m',this.value)"
+          onchange="updateAllocTime('${key}','m',this.value)">
+        <span class="alloc-dur-lbl">분</span>
+        <span class="alloc-dur-total" id="alloc-tot-${key}">${fmtHM(allocSec(key))}</span>
       </div>
-      <div class="alloc-bar"><div class="alloc-bar-fill" id="alloc-bar-${key}" style="width:${barW}%"></div></div>
     </div>`;
   }).join('');
 
-  updateAllocTotal();
+  updateAllocSummary();
 }
 
-function calcAllocSec(pct) {
-  const h = parseInt(document.getElementById('availH').value) || 0;
-  const m = parseInt(document.getElementById('availM').value) || 0;
-  return Math.round((h * 3600 + m * 60) * pct / 100);
+function updateAllocTime(key, field, val) {
+  if (!allocTimes[key]) allocTimes[key] = { h: 0, m: 0 };
+  allocTimes[key][field] = Math.max(0, parseInt(val) || 0);
+  const totEl = document.getElementById('alloc-tot-' + key);
+  if (totEl) totEl.textContent = fmtHM(allocSec(key));
+  updateAllocSummary();
 }
 
-function fmtAllocTime(sec) {
-  if (sec <= 0) return '—';
-  const h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60);
-  if (h > 0 && m > 0) return `${h}h ${m}m`;
-  if (h > 0) return `${h}h`;
-  return `${m}m`;
-}
-
-function updateAllocPct(key, val) {
-  allocPcts[key] = Math.max(0, Math.min(100, parseInt(val) || 0));
-  const sec = calcAllocSec(allocPcts[key]);
-  const resEl = document.getElementById('alloc-res-' + key);
-  const barEl = document.getElementById('alloc-bar-' + key);
-  if (resEl) resEl.textContent = fmtAllocTime(sec);
-  if (barEl) barEl.style.width = Math.min(100, allocPcts[key]) + '%';
-  updateAllocTotal();
-}
-
-function updateAllocTotal() {
-  const total = Object.values(allocPcts).reduce((a, b) => a + Number(b), 0);
-  const el = document.getElementById('allocTotalVal');
+function updateAllocSummary() {
+  const total = allocTotal();
   const applyBtn = document.getElementById('allocApplyBtn');
-  const hintEl = document.getElementById('allocHint');
-  if (!el) return;
-
-  const h = parseInt(document.getElementById('availH').value) || 0;
-  const m = parseInt(document.getElementById('availM').value) || 0;
-  const availSec = h * 3600 + m * 60;
-
-  // 가용시간 표시
-  const dispEl = document.getElementById('availDisplay');
-  if (dispEl) dispEl.textContent = '= ' + fmtAllocTime(availSec);
-
-  el.textContent = total + '%';
-  el.className = 'alloc-total-val ' + (total === 100 ? 'ok' : total > 100 ? 'over' : 'warn');
-
-  const recTasks = tasks.filter(t => t.type === 'recurring' && t.state !== 'done');
+  const summary = document.getElementById('allocSummary');
+  const summaryVal = document.getElementById('allocSummaryVal');
+  if (summary) summary.style.display = total > 0 ? 'flex' : 'none';
+  if (summaryVal) summaryVal.textContent = fmtHM(total);
   if (applyBtn) {
-    const canApply = availSec > 0 && total > 0 && total <= 100 && recTasks.length > 0;
-    applyBtn.disabled = !canApply;
-    if (total > 100) applyBtn.textContent = `⚠ 합계 ${total}% — 초과됨`;
-    else if (total < 100 && total > 0) applyBtn.textContent = `⚖ 적용 (${total}% · 미배분 ${100-total}%)`;
-    else if (canApply) applyBtn.textContent = `✅ ${fmtAllocTime(availSec)} 기준으로 적용`;
-    else applyBtn.textContent = '⚖ 오늘 시간에 적용';
-  }
-
-  // 힌트: 배분 결과 총합 표시
-  if (hintEl && total > 0 && availSec > 0) {
-    const allocatedSec = Math.round(availSec * total / 100);
-    hintEl.textContent = `총 배분: ${fmtAllocTime(allocatedSec)} / ${fmtAllocTime(availSec)}`;
-  } else if (hintEl) {
-    hintEl.textContent = '';
+    applyBtn.disabled = total <= 0;
+    applyBtn.textContent = total > 0 ? `✅ 오늘 시간 적용 (총 ${fmtHM(total)})` : '✅ 오늘 시간 적용';
   }
 }
 
 function applyAllocation() {
-  const h = parseInt(document.getElementById('availH').value) || 0;
-  const m = parseInt(document.getElementById('availM').value) || 0;
-  const availSec = h * 3600 + m * 60;
-  if (availSec <= 0) { toast('가용시간을 입력하세요', 'warning'); return; }
-
-  const total = Object.values(allocPcts).reduce((a, b) => a + Number(b), 0);
-  if (total > 100) { toast(`비중 합계가 ${total}%입니다. 100% 이하로 맞춰주세요`, 'warning'); return; }
-  if (total <= 0) { toast('비중(%)을 입력하세요', 'warning'); return; }
-
+  const tList = allocTasks();
+  if (!tList.length) { toast('적용할 반복 업무 없음', 'warning'); return; }
   let changed = 0;
-  const results = [];
-  tasks.forEach(t => {
+  tList.forEach(t => {
     const key = String(t.id);
-    if (t.type === 'recurring' && allocPcts[key] !== undefined && allocPcts[key] > 0) {
-      const newDur = Math.round(availSec * allocPcts[key] / 100);
-      if (newDur > 0) {
-        t.duration = newDur;
-        results.push(`${t.name}: ${fmtAllocTime(newDur)}`);
-        changed++;
-      }
-    }
+    const sec = allocSec(key);
+    if (sec > 0 && sec !== t.duration) { t.duration = sec; changed++; }
   });
-
   if (changed > 0) {
     saveTasks(); render(); updateSummary(); renderDayProg();
     if (accessToken) syncToDrive();
     toast(`✅ ${changed}개 업무 시간 적용됨`, 'success');
-    renderAllocList(); // 적용 후 목록 갱신
+    renderAllocList();
   } else {
-    toast('적용할 반복 업무 없음', 'warning');
+    toast('변경 사항 없음', 'warning');
   }
 }
 
-// 가용시간 입력 변경 → 계산 결과 즉시 업데이트
-function onAvailChange() {
-  const detail = document.getElementById('allocDetail');
-  if (!detail || detail.classList.contains('hidden')) return;
-  const recTasks = tasks.filter(t => t.type === 'recurring' && t.state !== 'done');
-  recTasks.forEach(t => {
-    const key = String(t.id);
-    const sec = calcAllocSec(allocPcts[key] || 0);
-    const resEl = document.getElementById('alloc-res-' + key);
-    if (resEl) resEl.textContent = fmtAllocTime(sec);
-  });
-  updateAllocTotal();
-}
-
-// ══════════════════════════════════════════
-//  모바일 배분 팝업
-// ══════════════════════════════════════════
+/* ────────────────────────────────────────
+   모바일 팝업
+──────────────────────────────────────── */
 function openMobAlloc() {
   const overlay = document.getElementById('mobAllocOverlay');
   overlay.style.display = 'flex';
   document.body.style.overflow = 'hidden';
-  // 사이드바 allocPcts 값 동기화
-  syncMobFromDesk();
+  initAllocTimes();
   renderMobAllocList();
 }
 
 function closeMobAlloc() {
   document.getElementById('mobAllocOverlay').style.display = 'none';
   document.body.style.overflow = '';
-  // 모바일 입력값을 데스크탑 allocPcts에 반영
-  syncDeskFromMob();
 }
 
 function closeMobAllocOutside(e) {
   if (e.target === document.getElementById('mobAllocOverlay')) closeMobAlloc();
 }
 
-// 데스크탑 → 모바일 동기화
-function syncMobFromDesk() {
-  const h = document.getElementById('availH');
-  const m = document.getElementById('availM');
-  if (h) document.getElementById('mobAvailH').value = h.value;
-  if (m) document.getElementById('mobAvailM').value = m.value;
-  updateMobAvailDisplay();
-}
-
-// 모바일 → 데스크탑 동기화
-function syncDeskFromMob() {
-  const mh = document.getElementById('mobAvailH').value;
-  const mm = document.getElementById('mobAvailM').value;
-  const dh = document.getElementById('availH');
-  const dm = document.getElementById('availM');
-  if (dh) { dh.value = mh; }
-  if (dm) { dm.value = mm; }
-  // allocPcts는 공유 객체이므로 자동 반영
-  // 데스크탑 패널도 열려있으면 갱신
-  refreshAllocIfOpen();
-}
-
-function updateMobAvailDisplay() {
-  const h = parseInt(document.getElementById('mobAvailH').value) || 0;
-  const m = parseInt(document.getElementById('mobAvailM').value) || 0;
-  const el = document.getElementById('mobAvailDisplay');
-  if (el) el.textContent = '= ' + fmtAllocTime(h * 3600 + m * 60);
-}
-
-function onMobAvailChange() {
-  updateMobAvailDisplay();
-  const recTasks = tasks.filter(t => t.type === 'recurring' && t.state !== 'done');
-  recTasks.forEach(t => {
-    const key = String(t.id);
-    const h = parseInt(document.getElementById('mobAvailH').value) || 0;
-    const mm = parseInt(document.getElementById('mobAvailM').value) || 0;
-    const sec = Math.round((h * 3600 + mm * 60) * (allocPcts[key] || 0) / 100);
-    const resEl = document.getElementById('mob-alloc-res-' + key);
-    if (resEl) resEl.textContent = fmtAllocTime(sec);
-  });
-  updateMobAllocTotal();
-}
-
 function renderMobAllocList() {
-  const recTasks = tasks.filter(t => t.type === 'recurring' && t.state !== 'done');
   const list = document.getElementById('mobAllocList');
   const applyBtn = document.getElementById('mobAllocApplyBtn');
+  const summary = document.getElementById('mobAllocSummary');
+  const summaryVal = document.getElementById('mobAllocSummaryVal');
+  const tList = allocTasks();
 
-  if (!recTasks.length) {
-    list.innerHTML = '<div class="alloc-empty">반복 업무를 추가하면<br>여기서 비중을 설정할 수 있습니다</div>';
+  if (!tList.length) {
+    list.innerHTML = '<div class="alloc-empty">반복 업무를 추가하면<br>여기서 시간을 설정할 수 있습니다</div>';
     if (applyBtn) applyBtn.disabled = true;
-    updateMobAllocTotal();
+    if (summary) summary.style.display = 'none';
     return;
   }
 
-  // 신규 task 균등 배분
-  const defaultPct = Math.floor(100 / recTasks.length);
-  recTasks.forEach((t, i) => {
+  list.innerHTML = tList.map(t => {
     const key = String(t.id);
-    if (allocPcts[key] === undefined)
-      allocPcts[key] = (i === 0) ? 100 - defaultPct * (recTasks.length - 1) : defaultPct;
-  });
-
-  // 삭제된 task 정리
-  const validIds = new Set(recTasks.map(t => String(t.id)));
-  Object.keys(allocPcts).forEach(id => { if (!validIds.has(id)) delete allocPcts[id]; });
-
-  const h = parseInt(document.getElementById('mobAvailH').value) || 0;
-  const mm = parseInt(document.getElementById('mobAvailM').value) || 0;
-  const availSec = h * 3600 + mm * 60;
-
-  list.innerHTML = recTasks.map(t => {
-    const key = String(t.id);
-    const pct = allocPcts[key] !== undefined ? allocPcts[key] : 0;
-    const sec = Math.round(availSec * pct / 100);
-    const barW = Math.min(100, pct);
+    const v = allocTimes[key] || { h: 0, m: 0 };
     return `<div class="alloc-item">
-      <div class="alloc-item-row">
-        <span class="alloc-item-name" title="${esc(t.name)}">${esc(t.name)}</span>
-        <div class="alloc-pct-wrap">
-          <input class="alloc-item-pct" type="number" min="0" max="100" value="${pct}"
-            style="font-size:16px"
-            onchange="updateMobAllocPct('${key}', this.value)"
-            oninput="updateMobAllocPct('${key}', this.value)">
-          <span class="alloc-pct-unit">%</span>
-        </div>
-        <span class="alloc-item-result" id="mob-alloc-res-${key}">${fmtAllocTime(sec)}</span>
+      <div class="alloc-item-name">${esc(t.name)}<span>현재 ${fmtHM(t.duration)}</span></div>
+      <div class="alloc-dur-row">
+        <input class="alloc-dur-input" type="number" min="0" max="23" value="${v.h}"
+          style="font-size:16px;width:52px"
+          oninput="updateMobAllocTime('${key}','h',this.value)"
+          onchange="updateMobAllocTime('${key}','h',this.value)">
+        <span class="alloc-dur-lbl">시간</span>
+        <input class="alloc-dur-input" type="number" min="0" max="59" value="${v.m}"
+          style="font-size:16px;width:52px"
+          oninput="updateMobAllocTime('${key}','m',this.value)"
+          onchange="updateMobAllocTime('${key}','m',this.value)">
+        <span class="alloc-dur-lbl">분</span>
+        <span class="alloc-dur-total" id="mob-alloc-tot-${key}">${fmtHM(allocSec(key))}</span>
       </div>
-      <div class="alloc-bar"><div class="alloc-bar-fill" id="mob-alloc-bar-${key}" style="width:${barW}%"></div></div>
     </div>`;
   }).join('');
 
-  updateMobAllocTotal();
+  updateMobAllocSummary();
 }
 
-function updateMobAllocPct(key, val) {
-  allocPcts[key] = Math.max(0, Math.min(100, parseInt(val) || 0));
-  const h = parseInt(document.getElementById('mobAvailH').value) || 0;
-  const mm = parseInt(document.getElementById('mobAvailM').value) || 0;
-  const sec = Math.round((h * 3600 + mm * 60) * allocPcts[key] / 100);
-  const resEl = document.getElementById('mob-alloc-res-' + key);
-  const barEl = document.getElementById('mob-alloc-bar-' + key);
-  if (resEl) resEl.textContent = fmtAllocTime(sec);
-  if (barEl) barEl.style.width = Math.min(100, allocPcts[key]) + '%';
-  updateMobAllocTotal();
+function updateMobAllocTime(key, field, val) {
+  if (!allocTimes[key]) allocTimes[key] = { h: 0, m: 0 };
+  allocTimes[key][field] = Math.max(0, parseInt(val) || 0);
+  const totEl = document.getElementById('mob-alloc-tot-' + key);
+  if (totEl) totEl.textContent = fmtHM(allocSec(key));
+  // 데스크탑 패널도 열려있으면 동기화
+  const deskTotEl = document.getElementById('alloc-tot-' + key);
+  if (deskTotEl) deskTotEl.textContent = fmtHM(allocSec(key));
+  updateMobAllocSummary();
+  updateAllocSummary();
 }
 
-function updateMobAllocTotal() {
-  const total = Object.values(allocPcts).reduce((a, b) => a + Number(b), 0);
-  const el = document.getElementById('mobAllocTotalVal');
+function updateMobAllocSummary() {
+  const total = allocTotal();
   const applyBtn = document.getElementById('mobAllocApplyBtn');
-  const hintEl = document.getElementById('mobAllocHint');
-  if (!el) return;
-
-  const h = parseInt(document.getElementById('mobAvailH').value) || 0;
-  const mm = parseInt(document.getElementById('mobAvailM').value) || 0;
-  const availSec = h * 3600 + mm * 60;
-  const recTasks = tasks.filter(t => t.type === 'recurring' && t.state !== 'done');
-
-  el.textContent = total + '%';
-  el.className = 'alloc-total-val ' + (total === 100 ? 'ok' : total > 100 ? 'over' : 'warn');
-
+  const summary = document.getElementById('mobAllocSummary');
+  const summaryVal = document.getElementById('mobAllocSummaryVal');
+  if (summary) summary.style.display = total > 0 ? 'flex' : 'none';
+  if (summaryVal) summaryVal.textContent = fmtHM(total);
   if (applyBtn) {
-    const canApply = availSec > 0 && total > 0 && total <= 100 && recTasks.length > 0;
-    applyBtn.disabled = !canApply;
-    if (total > 100) applyBtn.textContent = `⚠ 합계 ${total}% 초과`;
-    else if (total < 100 && total > 0) applyBtn.textContent = `⚖ 적용 (${total}% · 미배분 ${100-total}%)`;
-    else if (canApply) applyBtn.textContent = `✅ ${fmtAllocTime(availSec)} 기준으로 적용`;
-    else applyBtn.textContent = '⚖ 오늘 시간에 적용';
-  }
-
-  if (hintEl && total > 0 && availSec > 0) {
-    const allocatedSec = Math.round(availSec * total / 100);
-    hintEl.textContent = `총 배분: ${fmtAllocTime(allocatedSec)} / ${fmtAllocTime(availSec)}`;
-  } else if (hintEl) {
-    hintEl.textContent = '';
+    applyBtn.disabled = total <= 0;
+    applyBtn.textContent = total > 0 ? `✅ 오늘 시간 적용 (총 ${fmtHM(total)})` : '✅ 오늘 시간 적용';
   }
 }
 
 function applyMobAllocation() {
-  const h = parseInt(document.getElementById('mobAvailH').value) || 0;
-  const mm = parseInt(document.getElementById('mobAvailM').value) || 0;
-  const availSec = h * 3600 + mm * 60;
-  if (availSec <= 0) { toast('가용시간을 입력하세요', 'warning'); return; }
-
-  const total = Object.values(allocPcts).reduce((a, b) => a + Number(b), 0);
-  if (total > 100) { toast(`비중 합계 ${total}% 초과`, 'warning'); return; }
-  if (total <= 0) { toast('비중(%)을 입력하세요', 'warning'); return; }
-
+  const tList = allocTasks();
+  if (!tList.length) { toast('적용할 반복 업무 없음', 'warning'); return; }
   let changed = 0;
-  tasks.forEach(t => {
+  tList.forEach(t => {
     const key = String(t.id);
-    if (t.type === 'recurring' && allocPcts[key] !== undefined && allocPcts[key] > 0) {
-      const newDur = Math.round(availSec * allocPcts[key] / 100);
-      if (newDur > 0) { t.duration = newDur; changed++; }
-    }
+    const sec = allocSec(key);
+    if (sec > 0 && sec !== t.duration) { t.duration = sec; changed++; }
   });
-
   if (changed > 0) {
     saveTasks(); render(); updateSummary(); renderDayProg();
     if (accessToken) syncToDrive();
-    // 데스크탑 가용시간 필드도 동기화
-    syncDeskFromMob();
     closeMobAlloc();
     toast(`✅ ${changed}개 업무 시간 적용됨`, 'success');
   } else {
-    toast('적용할 반복 업무 없음', 'warning');
+    toast('변경 사항 없음', 'warning');
+    closeMobAlloc();
   }
 }
 
