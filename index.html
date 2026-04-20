@@ -29,10 +29,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
 
 /* ── 아이폰 전용 (430px 이하) ── */
 @media(max-width:430px){
-  /* 사이드바 숨김 */
   .sidebar{display:none !important;}
-
-  /* 헤더 */
   .hdr{padding:10px 14px;flex-wrap:wrap;gap:6px;}
   .app-title{font-size:12px;}
   .date-lbl{font-size:10px;}
@@ -40,47 +37,31 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
   .tab{font-size:11px;padding:5px 10px;min-height:36px;}
   .hbtn{display:none;}
   .auth-name{max-width:70px;}
-
-  /* 요약바 — 핵심만 */
   .sumbar{padding:0 14px;overflow-x:auto;}
   .si{padding:6px 10px;}
   .si:nth-child(1){display:none;}
   .si:nth-child(2){display:none;}
   .si:nth-child(3){display:none;}
-
-  /* 타입 탭 */
   .type-tabs{padding:8px 14px 0;}
   .type-tab{font-size:12px;padding:7px 14px;}
-
-  /* 타이머 카드 — 2줄 구조 */
   .task-section{padding:10px 14px;}
   .cbody{flex-wrap:wrap;padding:12px 12px 8px;gap:6px;}
   .sdot{display:none;}
-
-  /* 1줄: 업무명 + 남은시간 나란히 */
   .tinfo{flex:1;min-width:0;}
   .tname{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .tmeta{flex-wrap:wrap;gap:4px;margin-top:3px;}
   .tremain{font-size:22px;font-weight:700;}
   .tpct{font-size:11px;}
-
-  /* 2줄: 버튼 전체 너비로 */
   .cacts{width:100%;justify-content:flex-end;gap:8px;padding-top:8px;border-top:1px solid var(--border);margin-top:2px;}
   .ibtn{width:44px;height:44px;font-size:16px;border-radius:9px;}
   .ibtn.play{border-color:var(--success);color:var(--success);}
   .ibtn.stop{border-color:var(--accent2);color:var(--accent2);}
-
-  /* 완료 팝업 */
   .done-card{padding:28px 20px;width:92vw;}
   .done-icon{font-size:48px;}
   .done-title{font-size:20px;}
   .done-name{font-size:15px;}
-
-  /* iOS 줌 방지 */
   .fi{font-size:16px !important;}
   input[type=text],input[type=number],input[type=date],select,textarea{font-size:16px !important;}
-
-  /* 통계 */
   .stats-tb{padding:10px 14px;}
   .sl-pane{padding:12px 14px;}
   .sr-pane{display:none;}
@@ -100,8 +81,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
 .hdr-right{display:flex;gap:6px;align-items:center;}
 .hbtn{font-family:var(--sans);font-size:11px;font-weight:600;padding:5px 10px;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--text-dim);cursor:pointer;transition:all .15s;}
 .hbtn:hover{border-color:var(--accent);color:var(--accent);}
-
-/* GOOGLE AUTH AREA */
 .auth-area{display:flex;align-items:center;gap:8px;padding:4px 10px;border-radius:7px;border:1px solid var(--border);background:var(--surface2);}
 .auth-avatar{width:22px;height:22px;border-radius:50%;border:1px solid var(--border);}
 .auth-name{font-size:11px;font-weight:600;color:var(--text-dim);max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -117,27 +96,19 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
 .sync-btn.signout:hover{border-color:var(--danger);color:var(--danger);}
 .sync-btn.manual{background:transparent;border:1px solid var(--border);color:var(--text-dim);}
 .sync-btn.manual:hover{border-color:var(--success);color:var(--success);}
-
-/* ── SUMMARY BAR ── */
 .sumbar{display:flex;padding:0 18px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;}
 .si{padding:7px 14px;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:1px;}
 .sl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);}
 .sv{font-family:var(--mono);font-size:14px;font-weight:500;color:var(--text);}
 .sv.ac{color:var(--accent)}.sv.ok{color:var(--success)}.sv.or{color:var(--orange)}
-
-/* SYNC STATUS BAR */
 .sync-bar{display:flex;align-items:center;gap:8px;padding:5px 18px;background:rgba(91,141,238,.06);border-bottom:1px solid var(--border);font-size:10px;color:var(--text-dim);flex-shrink:0;min-height:0;transition:all .3s;}
 .sync-bar.hidden{display:none;}
 .sync-bar-dot{width:6px;height:6px;border-radius:50%;background:var(--text-muted);flex-shrink:0;}
 .sync-bar-dot.ok{background:var(--success);}
 .sync-bar-dot.syncing{background:var(--accent2);animation:spin-dot 1s ease-in-out infinite;}
 .sync-bar-dot.err{background:var(--danger);}
-
-/* ── PAGES ── */
 .page{display:none;flex:1;overflow:hidden;}
 .page.active{display:flex;}
-
-/* ── SETUP PAGE ── */
 .setup-page{flex:1;display:flex;align-items:center;justify-content:center;padding:30px;}
 .setup-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:30px;max-width:520px;width:100%;}
 .setup-title{font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px;}
@@ -159,8 +130,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
 .btn-google{font-family:var(--sans);font-size:13px;font-weight:700;padding:10px 20px;border-radius:8px;border:1px solid #4285f4;background:#4285f4;color:#fff;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:10px;width:100%;justify-content:center;margin-top:12px;}
 .btn-google:hover{background:#2b6fed;}
 .google-logo{width:18px;height:18px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#4285f4;flex-shrink:0;}
-
-/* ── TIMER PAGE ── */
 .timer-page{flex:1;display:flex;overflow:hidden;}
 .task-main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
 .type-tabs{display:flex;padding:10px 18px 0;gap:5px;background:var(--bg);flex-shrink:0;}
@@ -176,8 +145,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
 .section-empty .eico{font-size:30px;opacity:.3;}
 .section-empty .etit{font-size:12px;font-weight:600;color:var(--text-dim);}
 .section-empty .edesc{font-size:11px;line-height:1.6;max-width:170px;}
-
-/* CARDS */
 .tc{background:var(--surface);border:1px solid var(--border);border-radius:9px;overflow:hidden;transition:border-color .2s,box-shadow .2s;}
 .tc.running{border-color:var(--accent);box-shadow:0 0 0 1px rgba(91,141,238,.1),0 0 14px rgba(91,141,238,.06);}
 .tc.overdue{border-color:var(--danger);animation:pb 1.5s ease-in-out infinite;}
@@ -220,8 +187,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
 .ibtn.stop{border-color:var(--accent);color:var(--accent);}
 .ibtn.stop:hover{border-color:var(--danger);color:var(--danger);}
 .ibtn.del:hover{border-color:var(--danger);color:var(--danger);}
-
-/* SIDEBAR */
 .sidebar{width:260px;border-left:1px solid var(--border);background:var(--surface);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;}
 .sb-tabs{display:flex;border-bottom:1px solid var(--border);}
 .sb-tab{flex:1;font-family:var(--sans);font-size:11px;font-weight:700;padding:9px 6px;border:none;cursor:pointer;background:transparent;color:var(--text-muted);transition:all .15s;border-bottom:2px solid transparent;}
@@ -260,8 +225,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
 .info-box.purple{border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.06);}
 .info-box.teal{border-color:rgba(45,212,191,.25);background:rgba(45,212,191,.05);}
 .hidden{display:none!important;}
-
-/* STATS */
 .stats-page{flex:1;display:flex;flex-direction:column;overflow:hidden;}
 .stats-tb{display:flex;align-items:center;justify-content:space-between;padding:11px 18px;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0;}
 .mnav{display:flex;align-items:center;gap:10px;}
@@ -318,8 +281,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
 .di-meta{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--text-muted);}
 .no-sel{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 16px;text-align:center;gap:7px;color:var(--text-muted);flex:1;}
 .no-data-row{padding:24px;text-align:center;color:var(--text-muted);font-size:12px;}
-
-/* MODAL */
 .moverlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(4px);}
 .modal{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;width:360px;max-width:90vw;}
 .mt{font-size:14px;font-weight:700;margin-bottom:7px;}
@@ -329,8 +290,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
 .toast{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:8px 13px;font-size:12px;font-weight:500;color:var(--text);box-shadow:0 5px 18px rgba(0,0,0,.4);animation:su .22s ease;display:flex;align-items:center;gap:7px;min-width:190px;}
 .toast.success{border-color:var(--success)}.toast.warning{border-color:var(--accent2)}.toast.error{border-color:var(--danger)}
 @keyframes su{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
-
-/* COMPLETION POPUP */
 .done-overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);display:flex;align-items:center;justify-content:center;z-index:300;backdrop-filter:blur(6px);animation:fadeIn .25s ease;}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .done-card{background:var(--surface);border:2px solid var(--success);border-radius:18px;padding:36px 30px;width:400px;max-width:92vw;text-align:center;box-shadow:0 0 50px rgba(91,232,138,.18);animation:popIn .32s cubic-bezier(.34,1.56,.64,1);}
@@ -341,6 +300,39 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
 .done-time{font-family:var(--mono);font-size:13px;color:var(--text-dim);margin-bottom:24px;}
 .done-btn{font-family:var(--sans);font-size:13px;font-weight:700;padding:12px 28px;border-radius:8px;border:none;background:var(--success);color:#0e0f13;cursor:pointer;transition:all .15s;width:100%;}
 .done-btn:hover{background:#7af5a8;}
+
+/* ══ 오늘 시간 배분 패널 ══ */
+.alloc-panel{background:rgba(167,139,250,.04);border:1px solid rgba(167,139,250,.25);border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:8px;}
+.alloc-header{display:flex;align-items:center;justify-content:space-between;}
+.alloc-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);}
+.alloc-toggle{font-size:10px;color:var(--text-dim);cursor:pointer;background:none;border:1px solid var(--border);border-radius:4px;padding:2px 7px;transition:all .15s;}
+.alloc-toggle:hover{border-color:var(--purple);color:var(--purple);}
+.avail-row{display:flex;align-items:center;gap:5px;}
+.alloc-total-row{display:flex;justify-content:space-between;align-items:center;padding:5px 8px;border-radius:5px;background:var(--bg);}
+.alloc-total-lbl{font-size:10px;color:var(--text-muted);}
+.alloc-total-val{font-family:var(--mono);font-size:13px;font-weight:700;}
+.alloc-total-val.ok{color:var(--success);}
+.alloc-total-val.warn{color:var(--accent2);}
+.alloc-total-val.over{color:var(--danger);}
+.alloc-avail-display{font-family:var(--mono);font-size:10px;color:var(--text-muted);}
+.alloc-list{display:flex;flex-direction:column;gap:4px;max-height:210px;overflow-y:auto;}
+.alloc-list::-webkit-scrollbar{width:3px;}
+.alloc-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.alloc-item{padding:6px 8px;background:var(--bg);border-radius:5px;border:1px solid var(--border);}
+.alloc-item-row{display:flex;align-items:center;gap:5px;}
+.alloc-item-name{font-size:11px;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
+.alloc-pct-wrap{display:flex;align-items:center;gap:3px;flex-shrink:0;}
+.alloc-item-pct{width:44px;font-family:var(--mono);font-size:12px;text-align:center;padding:3px 4px;border-radius:4px;border:1px solid var(--border);background:var(--surface2);color:var(--text);outline:none;}
+.alloc-item-pct:focus{border-color:var(--purple);}
+.alloc-pct-unit{font-size:10px;color:var(--text-muted);}
+.alloc-item-result{font-family:var(--mono);font-size:10px;color:var(--purple);min-width:40px;text-align:right;flex-shrink:0;}
+.alloc-bar{height:2px;background:var(--border);border-radius:1px;overflow:hidden;margin-top:4px;}
+.alloc-bar-fill{height:100%;background:var(--purple);border-radius:1px;transition:width .3s;}
+.btn-alloc{font-family:var(--sans);font-size:11px;font-weight:700;padding:8px 12px;border-radius:6px;border:none;cursor:pointer;transition:all .15s;width:100%;background:var(--purple);color:#fff;}
+.btn-alloc:hover:not(:disabled){background:#c4b5fd;}
+.btn-alloc:disabled{opacity:.4;cursor:not-allowed;}
+.alloc-empty{font-size:11px;color:var(--text-muted);text-align:center;padding:10px 0;line-height:1.6;}
+.alloc-hint{font-size:10px;color:var(--text-muted);text-align:center;padding:3px 0;line-height:1.5;}
 </style>
 </head>
 <body>
@@ -356,7 +348,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
     <button class="tab" id="tab-stats" onclick="goPage('stats',this)">📊 월별 통계</button>
   </div>
   <div class="hdr-right">
-    <!-- Google Auth Area -->
     <div class="auth-area" id="authArea">
       <div class="auth-status" id="authDot"></div>
       <span class="auth-name" id="authName">비로그인</span>
@@ -385,37 +376,26 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
   <span id="syncBarMsg">동기화 대기 중</span>
 </div>
 
-<!-- SETUP PAGE (shown only when no CLIENT_ID configured) -->
+<!-- SETUP PAGE -->
 <div class="page" id="page-setup" style="display:none;flex:1;">
   <div class="setup-page">
     <div class="setup-card">
       <div class="setup-title">🔗 Google Drive 동기화 설정</div>
       <div class="setup-sub">Google 계정으로 로그인하면 여러 컴퓨터에서 데이터를 자동으로 동기화할 수 있습니다.<br>아래 순서대로 한 번만 설정하면 됩니다.</div>
-
       <div class="setup-step">
         <div class="step-num">1</div>
         <div class="step-content">
           <div class="step-title">Google Cloud Console에서 프로젝트 생성</div>
-          <div class="step-desc">
-            <a href="https://console.cloud.google.com/" target="_blank">console.cloud.google.com</a> 접속 → 새 프로젝트 생성<br>
-            왼쪽 메뉴 → <b>API 및 서비스</b> → <b>라이브러리</b> → <b>Google Drive API</b> 사용 설정
-          </div>
+          <div class="step-desc"><a href="https://console.cloud.google.com/" target="_blank">console.cloud.google.com</a> 접속 → 새 프로젝트 생성<br>왼쪽 메뉴 → <b>API 및 서비스</b> → <b>라이브러리</b> → <b>Google Drive API</b> 사용 설정</div>
         </div>
       </div>
-
       <div class="setup-step">
         <div class="step-num">2</div>
         <div class="step-content">
           <div class="step-title">OAuth 클라이언트 ID 생성</div>
-          <div class="step-desc">
-            <b>사용자 인증 정보</b> → <b>사용자 인증 정보 만들기</b> → <b>OAuth 클라이언트 ID</b><br>
-            애플리케이션 유형: <b>웹 애플리케이션</b><br>
-            승인된 JavaScript 원본에 이 파일을 열 주소 추가<br>
-            (예: <code style="background:var(--surface2);padding:1px 4px;border-radius:3px;font-size:10px">file://</code> 또는 로컬 서버 주소)
-          </div>
+          <div class="step-desc"><b>사용자 인증 정보</b> → <b>OAuth 클라이언트 ID</b><br>애플리케이션 유형: <b>웹 애플리케이션</b></div>
         </div>
       </div>
-
       <div class="setup-step">
         <div class="step-num">3</div>
         <div class="step-content">
@@ -424,14 +404,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
           <input class="fi-setup" id="clientIdInput" placeholder="123456789-xxxxx.apps.googleusercontent.com" type="text">
         </div>
       </div>
-
       <div class="setup-actions">
         <button class="btn-setup-skip" onclick="skipSetup()">동기화 없이 사용</button>
         <button class="btn-setup-go" onclick="saveClientId()">저장 후 로그인</button>
-      </div>
-
-      <div style="margin-top:14px;padding:10px 12px;background:rgba(91,141,238,.07);border:1px solid rgba(91,141,238,.2);border-radius:7px;font-size:11px;color:var(--text-dim);line-height:1.6;">
-        💡 <b>팁:</b> 이 HTML 파일 자체를 Google Drive에 저장하거나, 웹 서버에 올려서 사용하면 더 편리합니다. 로컬 파일로 열 경우 Chrome에서 <code style="background:var(--surface2);padding:1px 4px;border-radius:3px">--allow-file-access-from-files</code> 플래그가 필요할 수 있습니다.
       </div>
     </div>
   </div>
@@ -458,6 +433,40 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
       </div>
       <!-- RECURRING -->
       <div class="sb-body" id="sb-rec">
+
+        <!-- ══ 오늘 시간 배분 패널 ══ -->
+        <div class="alloc-panel" id="allocPanel">
+          <div class="alloc-header">
+            <span class="alloc-title">⚖ 오늘 시간 배분</span>
+            <button class="alloc-toggle" onclick="toggleAllocDetail()" id="allocToggleBtn">▾ 펼치기</button>
+          </div>
+          <div id="allocDetail" class="hidden">
+            <div class="fg" style="margin-bottom:6px">
+              <label class="fl">오늘 가용시간</label>
+              <div class="avail-row">
+                <input class="fi" id="availH" type="number" min="0" max="24" value="8"
+                  oninput="onAvailChange()"
+                  style="width:52px;text-align:center;font-family:var(--mono)">
+                <span style="font-size:11px;color:var(--text-muted)">시간</span>
+                <input class="fi" id="availM" type="number" min="0" max="59" value="0"
+                  oninput="onAvailChange()"
+                  style="width:52px;text-align:center;font-family:var(--mono)">
+                <span style="font-size:11px;color:var(--text-muted)">분</span>
+                <span class="alloc-avail-display" id="availDisplay">= 8h</span>
+              </div>
+            </div>
+            <div class="alloc-total-row" style="margin-bottom:6px">
+              <span class="alloc-total-lbl">비중 합계</span>
+              <span class="alloc-total-val warn" id="allocTotalVal">0%</span>
+            </div>
+            <div class="alloc-list" id="allocList">
+              <div class="alloc-empty">반복 업무를 추가하면<br>여기서 비중을 설정할 수 있습니다</div>
+            </div>
+            <div class="alloc-hint" id="allocHint"></div>
+            <button class="btn-alloc" id="allocApplyBtn" onclick="applyAllocation()" disabled>⚖ 오늘 시간에 적용</button>
+          </div>
+        </div>
+
         <div class="sb-title">반복 업무 추가</div>
         <div class="info-box purple">마감일까지 매일 타이머가 자동 생성됩니다</div>
         <div class="fg"><label class="fl">업무명</label><input class="fi" id="rName" placeholder="예: 논문 작성" maxlength="40"></div>
@@ -578,7 +587,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
   </div>
 </div>
 
-
 <!-- COMPLETION POPUP -->
 <div class="done-overlay" id="doneOverlay" style="display:none">
   <div class="done-card">
@@ -589,7 +597,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
     <button class="done-btn" onclick="closeDonePopup()">확인</button>
   </div>
 </div>
-<!-- Google Identity Services -->
+
 <script src="https://accounts.google.com/gsi/client" async></script>
 
 <script>
@@ -597,23 +605,22 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
 //  CONFIG
 // ══════════════════════════════════════════
 const DRIVE_SCOPE   = 'https://www.googleapis.com/auth/drive.appdata';
-const DRIVE_FILE    = 'multitimer_sync.json';  // stored in Drive appDataFolder
-const SYNC_INTERVAL = 60000; // auto-sync every 60s
-
-// Storage keys (local)
+const DRIVE_FILE    = 'multitimer_sync.json';
+const SYNC_INTERVAL = 60000;
 const K_TASKS   = 'mt_tasks_v5';
 const K_DATE    = 'mt_date_v5';
 const K_HIST    = 'mt_hist_v5';
 const K_RECDEF  = 'mt_recdef_v5';
 const K_CLIENT  = 'mt_client_id';
 const K_TOKEN   = 'mt_access_token';
+const K_ALLOC   = 'mt_alloc_v1'; // 배분 설정 저장
 
 // ══════════════════════════════════════════
 //  STATE
 // ══════════════════════════════════════════
 let tasks=[], recDefs=[], tick_id=null, statsMonth=new Date(), selDay=null, snapCnt=0;
 let curTypeTab='rec', curSbTab='rec';
-let accessToken=null, driveFileId=null, syncStatus='idle'; // idle|syncing|ok|error
+let accessToken=null, driveFileId=null, syncStatus='idle';
 
 // ══════════════════════════════════════════
 //  INIT
@@ -629,7 +636,7 @@ function init() {
   renderDayProg();
   renderMonthLbl();
   setDefaultDeadline();
-  checkOAuthRedirectToken(); // handle iOS redirect OAuth return
+  checkOAuthRedirectToken();
   checkClientId();
   if('Notification' in window && Notification.permission==='default') Notification.requestPermission();
 }
@@ -645,7 +652,6 @@ function updateDateLbl() {
 }
 function todayStr(){
   const d=new Date();
-  // Use local date (not UTC) — important for Korean timezone (UTC+9)
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 function monthStr(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;}
@@ -667,12 +673,9 @@ function checkClientId() {
     initGoogleAuth(cid);
   }
 }
-
 function saveClientId() {
   const cid=document.getElementById('clientIdInput').value.trim();
-  if(!cid||!cid.includes('.apps.googleusercontent.com')) {
-    toast('올바른 Client ID 형식이 아닙니다','error'); return;
-  }
+  if(!cid||!cid.includes('.apps.googleusercontent.com')){toast('올바른 Client ID 형식이 아닙니다','error');return;}
   localStorage.setItem(K_CLIENT,cid);
   document.getElementById('page-setup').style.display='none';
   document.getElementById('tab-timer').style.display='';
@@ -681,7 +684,6 @@ function saveClientId() {
   initGoogleAuth(cid);
   toast('Client ID 저장됨','success');
 }
-
 function skipSetup() {
   document.getElementById('page-setup').style.display='none';
   document.getElementById('tab-timer').style.display='';
@@ -691,149 +693,94 @@ function skipSetup() {
 }
 
 // ══════════════════════════════════════════
-//  GOOGLE AUTH (Google Identity Services)
+//  GOOGLE AUTH
 // ══════════════════════════════════════════
-let tokenClient=null;
-let gsiAttempts=0;
-const GSI_MAX=20; // try for 10 seconds
+let tokenClient=null, gsiAttempts=0;
+const GSI_MAX=20;
 
 function initGoogleAuth(clientId) {
-  if(!window.google || !window.google.accounts){
+  if(!window.google||!window.google.accounts){
     gsiAttempts++;
-    if(gsiAttempts>=GSI_MAX){
-      // GSI failed to load — show manual OAuth fallback
-      console.warn('GSI failed to load, switching to manual OAuth');
-      setupManualOAuth(clientId);
-      return;
-    }
-    setTimeout(()=>initGoogleAuth(clientId),500); return;
+    if(gsiAttempts>=GSI_MAX){setupManualOAuth(clientId);return;}
+    setTimeout(()=>initGoogleAuth(clientId),500);return;
   }
   gsiAttempts=0;
   try {
     tokenClient=google.accounts.oauth2.initTokenClient({
-      client_id: clientId,
-      scope: DRIVE_SCOPE,
-      callback: handleTokenResponse,
-      error_callback: (e)=>{ console.error('GSI error',e); setupManualOAuth(clientId); }
+      client_id:clientId,scope:DRIVE_SCOPE,callback:handleTokenResponse,
+      error_callback:(e)=>{console.error('GSI error',e);setupManualOAuth(clientId);}
     });
-  } catch(e) {
-    console.warn('GSI init failed:', e);
-    setupManualOAuth(clientId); return;
-  }
-  // Try restore token from storage
+  } catch(e){setupManualOAuth(clientId);return;}
   const saved=sessionStorage.getItem(K_TOKEN)||localStorage.getItem(K_TOKEN+'_persist');
-  if(saved){ accessToken=saved; validateToken(accessToken); }
+  if(saved){accessToken=saved;validateToken(accessToken);}
 }
-
-// Manual OAuth flow for iOS/browsers where GSI popup is blocked
 function setupManualOAuth(clientId) {
   window._oauthClientId=clientId;
-  // Change sign-in button to use redirect flow
   const btn=document.getElementById('signInBtn');
-  if(btn){ btn.textContent='Google 로그인'; btn.onclick=googleSignInRedirect; }
+  if(btn){btn.textContent='Google 로그인';btn.onclick=googleSignInRedirect;}
 }
-
 function googleSignInRedirect() {
   const clientId=HARDCODED_CLIENT_ID||window._oauthClientId||localStorage.getItem(K_CLIENT);
-  if(!clientId){ toast('Client ID가 없습니다','error'); return; }
+  if(!clientId){toast('Client ID가 없습니다','error');return;}
   const redirectUri=encodeURIComponent(window.location.href.split('?')[0].split('#')[0]);
   const scope=encodeURIComponent(DRIVE_SCOPE+' https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email');
   const url=`https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}&include_granted_scopes=true`;
   window.location.href=url;
 }
-
 function checkOAuthRedirectToken() {
-  // Check if we're returning from OAuth redirect (token in URL hash)
   const hash=window.location.hash;
-  if(!hash) return;
+  if(!hash)return;
   const params=new URLSearchParams(hash.replace('#',''));
   const token=params.get('access_token');
   if(token){
     accessToken=token;
     sessionStorage.setItem(K_TOKEN,token);
     localStorage.setItem(K_TOKEN+'_persist',token);
-    // Clean URL hash
     history.replaceState(null,null,window.location.pathname);
-    fetchUserInfo();
-    syncFromDrive();
-    setSyncStatus('ok');
+    fetchUserInfo();syncFromDrive();setSyncStatus('ok');
     document.getElementById('manualSyncBtn').style.display='';
     toast('Google 로그인 완료! ☁','success');
   }
 }
-
 function googleSignIn() {
-  if(tokenClient){
-    try{ tokenClient.requestAccessToken(); return; }
-    catch(e){ console.warn('tokenClient failed, using redirect'); }
-  }
+  if(tokenClient){try{tokenClient.requestAccessToken();return;}catch(e){}}
   googleSignInRedirect();
 }
-
 function googleSignOut() {
-  if(accessToken) google.accounts.oauth2.revoke(accessToken,()=>{});
-  accessToken=null; driveFileId=null;
+  if(accessToken)google.accounts.oauth2.revoke(accessToken,()=>{});
+  accessToken=null;driveFileId=null;
   sessionStorage.removeItem(K_TOKEN);
-  updateAuthUI(null);
-  toast('로그아웃됨','warning');
+  updateAuthUI(null);toast('로그아웃됨','warning');
 }
-
 function handleTokenResponse(resp) {
-  if(resp.error){ toast('로그인 실패: '+resp.error,'error'); return; }
+  if(resp.error){toast('로그인 실패: '+resp.error,'error');return;}
   accessToken=resp.access_token;
   sessionStorage.setItem(K_TOKEN,accessToken);
-  fetchUserInfo();
-  syncFromDrive(); // pull on login
-  setSyncStatus('ok');
+  fetchUserInfo();syncFromDrive();setSyncStatus('ok');
   document.getElementById('manualSyncBtn').style.display='';
   toast('Google 로그인 완료! 데이터 동기화 중...','success');
 }
-
 async function validateToken(token) {
   try {
     const r=await fetch('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token='+token);
-    if(!r.ok) throw new Error();
-    fetchUserInfo();
-    document.getElementById('manualSyncBtn').style.display='';
-    setSyncStatus('ok');
-    syncFromDrive();
-  } catch { accessToken=null; sessionStorage.removeItem(K_TOKEN); updateAuthUI(null); }
+    if(!r.ok)throw new Error();
+    fetchUserInfo();document.getElementById('manualSyncBtn').style.display='';setSyncStatus('ok');syncFromDrive();
+  } catch{accessToken=null;sessionStorage.removeItem(K_TOKEN);updateAuthUI(null);}
 }
-
 async function fetchUserInfo() {
-  if(!accessToken) return;
-  try {
-    const r=await fetch('https://www.googleapis.com/oauth2/v2/userinfo',{headers:{Authorization:'Bearer '+accessToken}});
-    const u=await r.json();
-    updateAuthUI(u);
-  } catch {}
+  if(!accessToken)return;
+  try{const r=await fetch('https://www.googleapis.com/oauth2/v2/userinfo',{headers:{Authorization:'Bearer '+accessToken}});const u=await r.json();updateAuthUI(u);}catch{}
 }
-
 function updateAuthUI(user) {
-  const area=document.getElementById('authArea');
-  const dot=document.getElementById('authDot');
-  const nameEl=document.getElementById('authName');
-  const signInBtn=document.getElementById('signInBtn');
+  const area=document.getElementById('authArea'),dot=document.getElementById('authDot'),nameEl=document.getElementById('authName'),signInBtn=document.getElementById('signInBtn');
   if(user){
-    nameEl.textContent=user.name||user.email||'로그인됨';
-    dot.className='auth-status synced';
-    signInBtn.textContent='로그아웃';
-    signInBtn.className='sync-btn signout';
-    signInBtn.onclick=googleSignOut;
-    // Add avatar
-    if(user.picture&&!document.getElementById('authAvatar')){
-      const img=document.createElement('img');
-      img.id='authAvatar'; img.className='auth-avatar'; img.src=user.picture;
-      area.insertBefore(img,nameEl);
-    }
+    nameEl.textContent=user.name||user.email||'로그인됨';dot.className='auth-status synced';
+    signInBtn.textContent='로그아웃';signInBtn.className='sync-btn signout';signInBtn.onclick=googleSignOut;
+    if(user.picture&&!document.getElementById('authAvatar')){const img=document.createElement('img');img.id='authAvatar';img.className='auth-avatar';img.src=user.picture;area.insertBefore(img,nameEl);}
   } else {
-    nameEl.textContent='비로그인';
-    dot.className='auth-status';
-    signInBtn.textContent='Google 로그인';
-    signInBtn.className='sync-btn signin';
-    signInBtn.onclick=googleSignIn;
-    const av=document.getElementById('authAvatar');
-    if(av) av.remove();
+    nameEl.textContent='비로그인';dot.className='auth-status';
+    signInBtn.textContent='Google 로그인';signInBtn.className='sync-btn signin';signInBtn.onclick=googleSignIn;
+    const av=document.getElementById('authAvatar');if(av)av.remove();
     document.getElementById('manualSyncBtn').style.display='none';
   }
 }
@@ -841,207 +788,71 @@ function updateAuthUI(user) {
 // ══════════════════════════════════════════
 //  SYNC STATUS UI
 // ══════════════════════════════════════════
-function setSyncStatus(status, msg) {
+function setSyncStatus(status,msg) {
   syncStatus=status;
-  const bar=document.getElementById('syncBar');
-  const barDot=document.getElementById('syncBarDot');
-  const barMsg=document.getElementById('syncBarMsg');
-  const authDot=document.getElementById('authDot');
-  if(status==='syncing'){
-    bar.classList.remove('hidden');
-    barDot.className='sync-bar-dot syncing';
-    authDot.className='auth-status syncing';
-    barMsg.textContent=msg||'동기화 중...';
-  } else if(status==='ok'){
-    bar.classList.remove('hidden');
-    barDot.className='sync-bar-dot ok';
-    authDot.className='auth-status synced';
-    const now=new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
-    barMsg.textContent=msg||`마지막 동기화: ${now}`;
-    setTimeout(()=>bar.classList.add('hidden'),4000);
-  } else if(status==='error'){
-    bar.classList.remove('hidden');
-    barDot.className='sync-bar-dot err';
-    authDot.className='auth-status error';
-    barMsg.textContent=msg||'동기화 실패';
-  }
+  const bar=document.getElementById('syncBar'),barDot=document.getElementById('syncBarDot'),barMsg=document.getElementById('syncBarMsg'),authDot=document.getElementById('authDot');
+  if(status==='syncing'){bar.classList.remove('hidden');barDot.className='sync-bar-dot syncing';authDot.className='auth-status syncing';barMsg.textContent=msg||'동기화 중...';}
+  else if(status==='ok'){bar.classList.remove('hidden');barDot.className='sync-bar-dot ok';authDot.className='auth-status synced';const now=new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});barMsg.textContent=msg||`마지막 동기화: ${now}`;setTimeout(()=>bar.classList.add('hidden'),4000);}
+  else if(status==='error'){bar.classList.remove('hidden');barDot.className='sync-bar-dot err';authDot.className='auth-status error';barMsg.textContent=msg||'동기화 실패';}
 }
 
 // ══════════════════════════════════════════
-//  DRIVE API — FIND / READ / WRITE
+//  DRIVE API
 // ══════════════════════════════════════════
 async function findDriveFile() {
-  const r=await fetch(
-    `https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name%3D%22${DRIVE_FILE}%22&fields=files(id,modifiedTime)`,
-    {headers:{Authorization:'Bearer '+accessToken}}
-  );
-  const d=await r.json();
-  return d.files&&d.files.length>0?d.files[0]:null;
+  const r=await fetch(`https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name%3D%22${DRIVE_FILE}%22&fields=files(id,modifiedTime)`,{headers:{Authorization:'Bearer '+accessToken}});
+  const d=await r.json();return d.files&&d.files.length>0?d.files[0]:null;
 }
-
 async function readDriveFile(fileId) {
-  const r=await fetch(
-    `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`,
-    {headers:{Authorization:'Bearer '+accessToken}}
-  );
-  return r.json();
+  const r=await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`,{headers:{Authorization:'Bearer '+accessToken}});return r.json();
 }
-
 async function writeDriveFile(data) {
-  const body=JSON.stringify(data);
-  const contentType='application/json';
-  if(driveFileId){
-    // Update existing
-    const r=await fetch(
-      `https://www.googleapis.com/upload/drive/v3/files/${driveFileId}?uploadType=media`,
-      {method:'PATCH',headers:{Authorization:'Bearer '+accessToken,'Content-Type':contentType},body}
-    );
-    return r.ok;
-  } else {
-    // Create new in appDataFolder
-    const meta=JSON.stringify({name:DRIVE_FILE,parents:['appDataFolder']});
-    const form=new FormData();
-    form.append('metadata',new Blob([meta],{type:'application/json'}));
-    form.append('file',new Blob([body],{type:contentType}));
-    const r=await fetch(
-      'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id',
-      {method:'POST',headers:{Authorization:'Bearer '+accessToken},body:form}
-    );
-    const d=await r.json();
-    if(d.id){ driveFileId=d.id; return true; }
-    return false;
-  }
+  const body=JSON.stringify(data),contentType='application/json';
+  if(driveFileId){const r=await fetch(`https://www.googleapis.com/upload/drive/v3/files/${driveFileId}?uploadType=media`,{method:'PATCH',headers:{Authorization:'Bearer '+accessToken,'Content-Type':contentType},body});return r.ok;}
+  else{const meta=JSON.stringify({name:DRIVE_FILE,parents:['appDataFolder']});const form=new FormData();form.append('metadata',new Blob([meta],{type:'application/json'}));form.append('file',new Blob([body],{type:contentType}));const r=await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id',{method:'POST',headers:{Authorization:'Bearer '+accessToken},body:form});const d=await r.json();if(d.id){driveFileId=d.id;return true;}return false;}
 }
 
 // ══════════════════════════════════════════
-//  SYNC LOGIC: merge strategy = last-write-wins per date for history
+//  SYNC LOGIC
 // ══════════════════════════════════════════
 async function syncFromDrive() {
-  if(!accessToken) return;
-  setSyncStatus('syncing','Drive에서 불러오는 중...');
-  try {
-    const file=await findDriveFile();
-    if(!file){ setSyncStatus('ok','Drive에 데이터 없음 (첫 사용)'); syncToDrive(); return; }
-    driveFileId=file.id;
-    const remote=await readDriveFile(file.id);
-    mergeRemote(remote);
-    setSyncStatus('ok');
-    render(); updateSummary(); renderDayProg();
-    if(document.getElementById('page-stats').classList.contains('active')) renderStats();
-  } catch(e) {
-    setSyncStatus('error','동기화 실패: '+e.message);
-  }
+  if(!accessToken)return;setSyncStatus('syncing','Drive에서 불러오는 중...');
+  try{const file=await findDriveFile();if(!file){setSyncStatus('ok','Drive에 데이터 없음 (첫 사용)');syncToDrive();return;}driveFileId=file.id;const remote=await readDriveFile(file.id);mergeRemote(remote);setSyncStatus('ok');render();updateSummary();renderDayProg();if(document.getElementById('page-stats').classList.contains('active'))renderStats();}
+  catch(e){setSyncStatus('error','동기화 실패: '+e.message);}
 }
-
 async function syncToDrive() {
-  if(!accessToken) return;
-  setSyncStatus('syncing','Drive에 저장 중...');
-  try {
-    saveSnapshot();
-    const payload={
-      tasks,
-      recDefs,
-      history:getHist(),
-      savedDate:todayStr(),
-      lastModified:Date.now()
-    };
-    const ok=await writeDriveFile(payload);
-    if(ok) setSyncStatus('ok');
-    else setSyncStatus('error','저장 실패');
-  } catch(e) {
-    setSyncStatus('error','저장 실패: '+e.message);
-  }
+  if(!accessToken)return;setSyncStatus('syncing','Drive에 저장 중...');
+  try{saveSnapshot();const payload={tasks,recDefs,history:getHist(),savedDate:todayStr(),lastModified:Date.now()};const ok=await writeDriveFile(payload);if(ok)setSyncStatus('ok');else setSyncStatus('error','저장 실패');}
+  catch(e){setSyncStatus('error','저장 실패: '+e.message);}
 }
-
 function mergeRemote(remote) {
-  if(!remote) return;
-  const remoteTime=remote.lastModified||0;
-
-  // Merge history: take max elapsed per day-task key
-  const localHist=getHist();
-  const remoteHist=remote.history||{};
-  const merged={};
+  if(!remote)return;
+  const localHist=getHist(),remoteHist=remote.history||{},merged={};
   const allMonths=new Set([...Object.keys(localHist),...Object.keys(remoteHist)]);
-  allMonths.forEach(mk=>{
-    merged[mk]={};
-    const lm=localHist[mk]||{}, rm=remoteHist[mk]||{};
-    const allDays=new Set([...Object.keys(lm),...Object.keys(rm)]);
-    allDays.forEach(d=>{
-      merged[mk][d]={};
-      const ld=lm[d]||{}, rd=rm[d]||{};
-      const allKeys=new Set([...Object.keys(ld),...Object.keys(rd)]);
-      allKeys.forEach(k=>{ merged[mk][d][k]=Math.max(ld[k]||0, rd[k]||0); });
-    });
-  });
+  allMonths.forEach(mk=>{merged[mk]={};const lm=localHist[mk]||{},rm=remoteHist[mk]||{};const allDays=new Set([...Object.keys(lm),...Object.keys(rm)]);allDays.forEach(d=>{merged[mk][d]={};const ld=lm[d]||{},rd=rm[d]||{};const allKeys=new Set([...Object.keys(ld),...Object.keys(rd)]);allKeys.forEach(k=>{merged[mk][d][k]=Math.max(ld[k]||0,rd[k]||0);});});});
   localStorage.setItem(K_HIST,JSON.stringify(merged));
-
-  // Merge recDefs: merge by id first, then deduplicate by name (keep latest deadline)
-  const localRecDefs=recDefs;
-  const remoteRecDefs=remote.recDefs||[];
-  const recMap={};
-  localRecDefs.forEach(d=>recMap[d.id]=d);
-  remoteRecDefs.forEach(d=>{ if(!recMap[d.id]) recMap[d.id]=d; }); // add remote-only
-  // Deduplicate by name: if same name exists multiple times, keep the one with latest deadline
-  const nameMap={};
-  Object.values(recMap).forEach(d=>{
-    const key=d.name+'|||'+(d.category||'일반');
-    if(!nameMap[key] || d.deadline > nameMap[key].deadline) nameMap[key]=d;
-  });
-  recDefs=Object.values(nameMap);
-  saveRecDefs();
-
-  // Merge tasks for today
+  const localRecDefs=recDefs,remoteRecDefs=remote.recDefs||{},recMap={};
+  localRecDefs.forEach(d=>recMap[d.id]=d);remoteRecDefs.forEach&&remoteRecDefs.forEach(d=>{if(!recMap[d.id])recMap[d.id]=d;});
+  const nameMap={};Object.values(recMap).forEach(d=>{const key=d.name+'|||'+(d.category||'일반');if(!nameMap[key]||d.deadline>nameMap[key].deadline)nameMap[key]=d;});
+  recDefs=Object.values(nameMap);saveRecDefs();
   const today=todayStr();
-  if(remote.savedDate===today && remote.tasks) {
+  if(remote.savedDate===today&&remote.tasks){
     const remTasks=remote.tasks;
-    // Only merge tasks from same day — take higher elapsed
-    tasks.forEach(lt=>{
-      const rt=remTasks.find(r=>r.name===lt.name&&r.type===lt.type);
-      if(rt && rt.elapsed>lt.elapsed){ lt.elapsed=rt.elapsed; lt._baseElapsed=rt.elapsed; }
-    });
-    // Add remote tasks not in local (by name+type to avoid duplicates)
-    remTasks.forEach(rt=>{
-      const exists=tasks.find(lt=>lt.name===rt.name&&lt.type===rt.type);
-      if(!exists) tasks.push({...rt,state:'idle',startedAt:null,_baseElapsed:rt.elapsed||0});
-    });
-    // Final dedup: remove duplicate tasks with same name+type, keep highest elapsed
-    const taskMap={};
-    tasks.forEach(t=>{
-      const key=t.name+'|||'+t.type;
-      if(!taskMap[key] || t.elapsed>taskMap[key].elapsed) taskMap[key]=t;
-    });
-    tasks=Object.values(taskMap);
-    saveTasks();
-  } else if(remote.savedDate && remote.savedDate!==today) {
-    // Remote data is from a different day
-    // Remove daily tasks, reset recurring elapsed
-    tasks=tasks.filter(t=>t.type==='recurring' && (t.deadline||'9999')>=today);
-    tasks.forEach(t=>{t.elapsed=0;t.state='idle';t.startedAt=null;t._baseElapsed=0;});
-    saveTasks();
+    tasks.forEach(lt=>{const rt=remTasks.find(r=>r.name===lt.name&&r.type===lt.type);if(rt&&rt.elapsed>lt.elapsed){lt.elapsed=rt.elapsed;lt._baseElapsed=rt.elapsed;}});
+    remTasks.forEach(rt=>{const exists=tasks.find(lt=>lt.name===rt.name&&lt.type===rt.type);if(!exists)tasks.push({...rt,state:'idle',startedAt:null,_baseElapsed:rt.elapsed||0});});
+    const taskMap={};tasks.forEach(t=>{const key=t.name+'|||'+t.type;if(!taskMap[key]||t.elapsed>taskMap[key].elapsed)taskMap[key]=t;});tasks=Object.values(taskMap);saveTasks();
+  } else if(remote.savedDate&&remote.savedDate!==today){
+    tasks=tasks.filter(t=>t.type==='recurring'&&(t.deadline||'9999')>=today);tasks.forEach(t=>{t.elapsed=0;t.state='idle';t.startedAt=null;t._baseElapsed=0;});saveTasks();
   }
-
   toast('동기화 완료 ☁','success');
 }
-
-async function manualSync() {
-  await syncFromDrive();
-  await syncToDrive();
-}
-
-// Auto sync every minute when logged in
-setInterval(async()=>{
-  if(accessToken){
-    saveSnapshot();
-    await syncToDrive();
-  }
-}, SYNC_INTERVAL);
+async function manualSync(){await syncFromDrive();await syncToDrive();}
+setInterval(async()=>{if(accessToken){saveSnapshot();await syncToDrive();}},SYNC_INTERVAL);
 
 // ══════════════════════════════════════════
 //  RECURRING DEFS
 // ══════════════════════════════════════════
-function loadRecDefs(){
-  try{recDefs=JSON.parse(localStorage.getItem(K_RECDEF)||'[]');}catch{recDefs=[];}
-}
+function loadRecDefs(){try{recDefs=JSON.parse(localStorage.getItem(K_RECDEF)||'[]');}catch{recDefs=[];}}
 function saveRecDefs(){localStorage.setItem(K_RECDEF,JSON.stringify(recDefs));}
 
 function addRecTask() {
@@ -1055,25 +866,21 @@ function addRecTask() {
   if(!dl){toast('마감일을 설정하세요','warning');return;}
   if(dl<todayStr()){toast('마감일이 오늘보다 이전입니다','warning');return;}
   if(dur<=0){toast('일일 목표 시간을 설정하세요','warning');return;}
-  // Check duplicate by name (regardless of id)
   if(recDefs.find(r=>r.name===name&&r.deadline>=todayStr())){toast(`"${name}"은 이미 반복 업무로 등록되어 있습니다`,'warning');return;}
   const def={id:Date.now(),name,category:cat,deadline:dl,dailyDuration:dur,createdAt:todayStr()};
-  recDefs.push(def); saveRecDefs();
+  recDefs.push(def);saveRecDefs();
   spawnRecInstance(def);
-  saveTasks(); render(); updateSummary(); renderDayProg();
-  document.getElementById('rName').value='';
-  document.getElementById('rCat').value='';
-  document.getElementById('rH').value='0';
-  document.getElementById('rM').value='30';
+  saveTasks();render();updateSummary();renderDayProg();
+  // 배분 패널이 열려있으면 업데이트
+  refreshAllocIfOpen();
+  document.getElementById('rName').value='';document.getElementById('rCat').value='';document.getElementById('rH').value='0';document.getElementById('rM').value='30';
   toast(`"${name}" 반복 업무 추가됨 (마감: ${dl})`,'success');
-  if(accessToken) syncToDrive();
+  if(accessToken)syncToDrive();
 }
-
 function spawnRecInstance(def) {
   const today=todayStr();
-  if(def.deadline<today) return;
-  // Check by defId OR by name (prevent duplicates from pre-login entries)
-  if(tasks.find(t=>t.type==='recurring'&&(t.defId===def.id||t.name===def.name))) return;
+  if(def.deadline<today)return;
+  if(tasks.find(t=>t.type==='recurring'&&(t.defId===def.id||t.name===def.name)))return;
   tasks.push({id:Date.now()+Math.random(),type:'recurring',defId:def.id,name:def.name,category:def.category,deadline:def.deadline,duration:def.dailyDuration,elapsed:0,state:'idle',startedAt:null});
 }
 
@@ -1089,56 +896,28 @@ function addDayTask() {
   if(!name){toast('업무명을 입력하세요','warning');return;}
   if(dur<=0){toast('시간을 설정하세요','warning');return;}
   tasks.push({id:Date.now(),type:'daily',name,category:cat,duration:dur,elapsed:0,state:'idle',startedAt:null});
-  saveTasks(); render(); updateSummary(); renderDayProg();
-  document.getElementById('dName').value='';
-  document.getElementById('dCat').value='';
-  document.getElementById('dH').value='0';
-  document.getElementById('dM').value='30';
+  saveTasks();render();updateSummary();renderDayProg();
+  document.getElementById('dName').value='';document.getElementById('dCat').value='';document.getElementById('dH').value='0';document.getElementById('dM').value='30';
   toast(`"${name}" 일일 업무 추가됨`,'success');
-  if(accessToken) syncToDrive();
+  if(accessToken)syncToDrive();
 }
 
 // ══════════════════════════════════════════
-//  TASK STORAGE (local)
+//  TASK STORAGE
 // ══════════════════════════════════════════
 function saveTasks() {
   const data=tasks.map(t=>({...t,startedAt:t.state==='running'?Date.now():t.startedAt}));
-  localStorage.setItem(K_TASKS,JSON.stringify(data));
-  localStorage.setItem(K_DATE,todayStr());
-  saveSnapshot();
+  localStorage.setItem(K_TASKS,JSON.stringify(data));localStorage.setItem(K_DATE,todayStr());saveSnapshot();
 }
 function loadTasks() {
-  try{
-    const r=localStorage.getItem(K_TASKS);
-    tasks=r?JSON.parse(r):[];
-    tasks.forEach(t=>{
-      if(t.state==='running'&&t.startedAt){
-        // Catch up elapsed time that passed while page was closed/refreshed
-        const catchUp=Math.floor((Date.now()-t.startedAt)/1000);
-        t.elapsed=(t.elapsed||0)+catchUp;
-        t.startedAt=Date.now();
-        t._baseElapsed=t.elapsed;
-      }
-    });
-  }catch{tasks=[];}
+  try{const r=localStorage.getItem(K_TASKS);tasks=r?JSON.parse(r):[];tasks.forEach(t=>{if(t.state==='running'&&t.startedAt){const catchUp=Math.floor((Date.now()-t.startedAt)/1000);t.elapsed=(t.elapsed||0)+catchUp;t.startedAt=Date.now();t._baseElapsed=t.elapsed;}});}catch{tasks=[];}
 }
 function checkNewDay() {
-  const saved=localStorage.getItem(K_DATE), today=todayStr();
-  if(saved && saved!==today){
-    // New day detected — reset timers
-    saveSnapshot();
-    // Remove ALL daily tasks (one-day only)
-    // Keep only recurring tasks whose deadline hasn't passed
-    tasks=tasks.filter(t=>t.type==='recurring' && t.deadline>=today);
-    tasks.forEach(t=>{t.elapsed=0;t.state='idle';t.startedAt=null;t._baseElapsed=0;});
-    localStorage.setItem(K_DATE, today);
-    saveTasks();
-    toast('새 날 시작! 타이머가 초기화되었습니다 🌅','success');
-  } else if(!saved){
-    // First ever use — just set today
-    localStorage.setItem(K_DATE, today);
-  }
-  // Spawn recurring instances for today
+  const saved=localStorage.getItem(K_DATE),today=todayStr();
+  if(saved&&saved!==today){
+    saveSnapshot();tasks=tasks.filter(t=>t.type==='recurring'&&t.deadline>=today);tasks.forEach(t=>{t.elapsed=0;t.state='idle';t.startedAt=null;t._baseElapsed=0;});
+    localStorage.setItem(K_DATE,today);saveTasks();toast('새 날 시작! 타이머가 초기화되었습니다 🌅','success');
+  } else if(!saved){localStorage.setItem(K_DATE,today);}
   recDefs.forEach(def=>{if(def.deadline>=todayStr())spawnRecInstance(def);});
 }
 
@@ -1147,12 +926,9 @@ function checkNewDay() {
 // ══════════════════════════════════════════
 function getHist(){try{return JSON.parse(localStorage.getItem(K_HIST)||'{}');}catch{return {};}}
 function saveSnapshot() {
-  const today=todayStr(), mk=monthStr(new Date()), hist=getHist();
+  const today=todayStr(),mk=monthStr(new Date()),hist=getHist();
   if(!hist[mk])hist[mk]={};
-  const rec={};
-  tasks.forEach(t=>{
-    if(t.elapsed>0){const k=t.name+'|||'+(t.category||'일반')+'|||'+(t.type||'daily');rec[k]=(rec[k]||0)+t.elapsed;}
-  });
+  const rec={};tasks.forEach(t=>{if(t.elapsed>0){const k=t.name+'|||'+(t.category||'일반')+'|||'+(t.type||'daily');rec[k]=(rec[k]||0)+t.elapsed;}});
   if(Object.keys(rec).length>0)hist[mk][today]=rec;
   localStorage.setItem(K_HIST,JSON.stringify(hist));
 }
@@ -1162,113 +938,48 @@ function saveSnapshot() {
 // ══════════════════════════════════════════
 function startTick(){
   if(tick_id)clearInterval(tick_id);
-  // Use real clock diff so background tabs stay accurate
   tick_id=setInterval(()=>{
-    const now=Date.now();
-    let changed=false;
+    const now=Date.now();let changed=false;
     tasks.forEach(t=>{
       if(t.state==='running'&&t.startedAt){
-        // Calculate true elapsed from wall clock
         const trueElapsed=t._baseElapsed+(Math.floor((now-t.startedAt)/1000));
-        const prev=t.elapsed||0;
-        t.elapsed=trueElapsed;
-        if(t.elapsed!==prev) changed=true;
-        // Check completion (fire only once at the crossing point)
-        if(prev<t.duration && t.elapsed>=t.duration){
-          t.elapsed=t.duration;
-          t.state='done';
-          showDonePopup(t);
-          doNotify(t.name);
-        }
+        const prev=t.elapsed||0;t.elapsed=trueElapsed;
+        if(t.elapsed!==prev)changed=true;
+        if(prev<t.duration&&t.elapsed>=t.duration){t.elapsed=t.duration;t.state='done';showDonePopup(t);doNotify(t.name);}
       }
     });
-    if(changed){
-      snapCnt++;
-      if(snapCnt>=30){saveTasks();if(accessToken)syncToDrive();snapCnt=0;}
-      render(); updateSummary(); renderDayProg();
-    }
-  },500); // check every 0.5s for responsiveness
+    if(changed){snapCnt++;if(snapCnt>=30){saveTasks();if(accessToken)syncToDrive();snapCnt=0;}render();updateSummary();renderDayProg();}
+  },500);
 }
-function doNotify(name){
-  if('Notification' in window&&Notification.permission==='granted')
-    new Notification('타이머 완료',{body:`"${name}" 완료!`});
-}
+function doNotify(name){if('Notification' in window&&Notification.permission==='granted')new Notification('타이머 완료',{body:`"${name}" 완료!`});}
 
 // ══════════════════════════════════════════
 //  COMPLETION POPUP + SOUND
 // ══════════════════════════════════════════
 function playDoneSound(){
-  try{
-    const ctx=new (window.AudioContext||window.webkitAudioContext)();
-    // Three pleasant chime notes
-    const notes=[523,659,784]; // C, E, G
-    notes.forEach((freq,i)=>{
-      const osc=ctx.createOscillator();
-      const gain=ctx.createGain();
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.type='sine';
-      osc.frequency.value=freq;
-      const start=ctx.currentTime+i*0.18;
-      gain.gain.setValueAtTime(0,start);
-      gain.gain.linearRampToValueAtTime(0.4,start+0.04);
-      gain.gain.exponentialRampToValueAtTime(0.001,start+0.5);
-      osc.start(start); osc.stop(start+0.55);
-    });
-  }catch(e){}
+  try{const ctx=new (window.AudioContext||window.webkitAudioContext)();const notes=[523,659,784];notes.forEach((freq,i)=>{const osc=ctx.createOscillator(),gain=ctx.createGain();osc.connect(gain);gain.connect(ctx.destination);osc.type='sine';osc.frequency.value=freq;const start=ctx.currentTime+i*0.18;gain.gain.setValueAtTime(0,start);gain.gain.linearRampToValueAtTime(0.4,start+0.04);gain.gain.exponentialRampToValueAtTime(0.001,start+0.5);osc.start(start);osc.stop(start+0.55);});}catch(e){}
 }
-
-function showDonePopup(task){
-  playDoneSound();
-  document.getElementById('doneName').textContent=task.name;
-  document.getElementById('doneTime').textContent='할당 시간 '+fmtT(task.duration)+' 완료';
-  document.getElementById('doneOverlay').style.display='flex';
-}
-
-function closeDonePopup(){
-  document.getElementById('doneOverlay').style.display='none';
-  saveTasks();
-  if(accessToken) syncToDrive();
-}
+function showDonePopup(task){playDoneSound();document.getElementById('doneName').textContent=task.name;document.getElementById('doneTime').textContent='할당 시간 '+fmtT(task.duration)+' 완료';document.getElementById('doneOverlay').style.display='flex';}
+function closeDonePopup(){document.getElementById('doneOverlay').style.display='none';saveTasks();if(accessToken)syncToDrive();}
 
 // ══════════════════════════════════════════
 //  TASK ACTIONS
 // ══════════════════════════════════════════
-function startTask(id){
-  tasks.forEach(t=>{if(t.state==='running')t.state='paused';});
-  const t=tasks.find(t=>t.id===id);
-  if(!t||t.elapsed>=t.duration)return;
-  t.state='running';
-  t.startedAt=Date.now();
-  t._baseElapsed=t.elapsed||0;
-  saveTasks(); render(); updateSummary();
-}
+function startTask(id){tasks.forEach(t=>{if(t.state==='running')t.state='paused';});const t=tasks.find(t=>t.id===id);if(!t||t.elapsed>=t.duration)return;t.state='running';t.startedAt=Date.now();t._baseElapsed=t.elapsed||0;saveTasks();render();updateSummary();}
 function pauseTask(id){const t=tasks.find(t=>t.id===id);if(!t)return;t.state='paused';saveTasks();render();updateSummary();}
 function resetTask(id){const t=tasks.find(t=>t.id===id);if(!t)return;t.elapsed=0;t.state='idle';t.startedAt=null;saveTasks();render();updateSummary();}
 function deleteTask(id){
   const t=tasks.find(t=>t.id===id);if(!t)return;
   if(t.type==='recurring'){
     showModal(`반복 업무 삭제`,`"${t.name}" 반복 업무를 삭제하면 내일부터도 생성되지 않습니다. 삭제하시겠습니까?`,()=>{
-      recDefs=recDefs.filter(d=>d.id!==t.defId);saveRecDefs();
-      tasks=tasks.filter(x=>x.id!==id);
-      saveTasks();render();updateSummary();renderDayProg();
-      if(accessToken)syncToDrive();
+      recDefs=recDefs.filter(d=>d.id!==t.defId);saveRecDefs();tasks=tasks.filter(x=>x.id!==id);
+      saveTasks();render();updateSummary();renderDayProg();refreshAllocIfOpen();if(accessToken)syncToDrive();
     });
-  } else {
-    tasks=tasks.filter(x=>x.id!==id);saveTasks();render();updateSummary();renderDayProg();
-    if(accessToken)syncToDrive();
-  }
+  } else {tasks=tasks.filter(x=>x.id!==id);saveTasks();render();updateSummary();renderDayProg();if(accessToken)syncToDrive();}
 }
-function startNext(){
-  const list=curTypeTab==='rec'?tasks.filter(t=>t.type==='recurring'):tasks.filter(t=>t.type==='daily');
-  const n=list.find(t=>t.state==='idle'||t.state==='paused');
-  if(!n){toast('시작할 업무 없음','warning');return;}
-  startTask(n.id); toast(`"${n.name}" 시작 ▶`,'success');
-}
+function startNext(){const list=curTypeTab==='rec'?tasks.filter(t=>t.type==='recurring'):tasks.filter(t=>t.type==='daily');const n=list.find(t=>t.state==='idle'||t.state==='paused');if(!n){toast('시작할 업무 없음','warning');return;}startTask(n.id);toast(`"${n.name}" 시작 ▶`,'success');}
 function pauseAll(){tasks.forEach(t=>{if(t.state==='running')t.state='paused';});saveTasks();render();updateSummary();toast('전체 일시정지','warning');}
-function setP(type,h,m){
-  if(type==='r'){document.getElementById('rH').value=h;document.getElementById('rM').value=m;}
-  else{document.getElementById('dH').value=h;document.getElementById('dM').value=m;}
-}
+function setP(type,h,m){if(type==='r'){document.getElementById('rH').value=h;document.getElementById('rM').value=m;}else{document.getElementById('dH').value=h;document.getElementById('dM').value=m;}}
 
 // ══════════════════════════════════════════
 //  DEADLINE
@@ -1289,22 +1000,13 @@ function getState(t){if(t.state==='running'&&t.elapsed>t.duration)return'overdue
 function stLbl(s){return{idle:'대기중',running:'진행중',paused:'일시정지',done:'완료',overdue:'초과'}[s]||s;}
 
 function render(){
-  const isRec=curTypeTab==='rec';
-  const filtered=isRec?tasks.filter(t=>t.type==='recurring'):tasks.filter(t=>t.type==='daily');
-  const section=document.getElementById('taskSection');
-  document.getElementById('badge-rec').textContent=tasks.filter(t=>t.type==='recurring').length;
-  document.getElementById('badge-day').textContent=tasks.filter(t=>t.type==='daily').length;
-  if(filtered.length===0){
-    section.innerHTML=`<div class="section-empty"><div class="eico">${isRec?'🔁':'📌'}</div><div class="etit">${isRec?'반복 업무':'일일 업무'}가 없습니다</div><div class="edesc">${isRec?'마감일을 설정하면 매일 자동으로 타이머가 생성됩니다':'오른쪽 패널에서 오늘 하루 업무를 추가하세요'}</div></div>`;
-    return;
-  }
-  const ex={};
-  [...section.querySelectorAll('.tc')].forEach(c=>{ex[c.dataset.id]=c;});
-  Object.keys(ex).forEach(id=>{if(!filtered.find(t=>String(t.id)===String(id)))ex[id].remove();});
+  const isRec=curTypeTab==='rec';const filtered=isRec?tasks.filter(t=>t.type==='recurring'):tasks.filter(t=>t.type==='daily');const section=document.getElementById('taskSection');
+  document.getElementById('badge-rec').textContent=tasks.filter(t=>t.type==='recurring').length;document.getElementById('badge-day').textContent=tasks.filter(t=>t.type==='daily').length;
+  if(filtered.length===0){section.innerHTML=`<div class="section-empty"><div class="eico">${isRec?'🔁':'📌'}</div><div class="etit">${isRec?'반복 업무':'일일 업무'}가 없습니다</div><div class="edesc">${isRec?'마감일을 설정하면 매일 자동으로 타이머가 생성됩니다':'오른쪽 패널에서 오늘 하루 업무를 추가하세요'}</div></div>`;return;}
+  const ex={};[...section.querySelectorAll('.tc')].forEach(c=>{ex[c.dataset.id]=c;});Object.keys(ex).forEach(id=>{if(!filtered.find(t=>String(t.id)===String(id)))ex[id].remove();});
   filtered.forEach(task=>{
     const st=getState(task),pct=Math.min(100,(task.elapsed/task.duration)*100),over=task.elapsed>task.duration;
-    const d=daysUntil(task.deadline||'9999-12-31');
-    let urgCls='';
+    const d=daysUntil(task.deadline||'9999-12-31');let urgCls='';
     if(task.type==='recurring'){if(d<=0)urgCls=' deadline-urgent';else if(d<=3)urgCls=' deadline-soon';}
     let card=ex[task.id];
     if(!card){card=document.createElement('div');card.className='tc';card.dataset.id=task.id;card.innerHTML=buildCard(task);section.appendChild(card);}
@@ -1344,22 +1046,15 @@ function updateSummary(){
   const plan=all.reduce((s,t)=>s+t.duration,0),done=all.reduce((s,t)=>s+Math.min(t.elapsed,t.duration),0),left=all.reduce((s,t)=>s+Math.max(0,t.duration-t.elapsed),0);
   const urgent=rec.filter(t=>{const d=daysUntil(t.deadline||'9999-12-31');return d<=3&&d>=0;}).length;
   const run=all.find(t=>t.state==='running');
-  document.getElementById('sumRec').textContent=rec.length;
-  document.getElementById('sumDay').textContent=day.length;
-  document.getElementById('sumPlan').textContent=fmtT(plan);
-  document.getElementById('sumDone').textContent=fmtT(done);
-  document.getElementById('sumLeft').textContent=fmtT(left);
-  document.getElementById('sumUrgent').textContent=urgent+'건';
-  document.getElementById('sumRun').textContent=run?run.name:'없음';
+  document.getElementById('sumRec').textContent=rec.length;document.getElementById('sumDay').textContent=day.length;
+  document.getElementById('sumPlan').textContent=fmtT(plan);document.getElementById('sumDone').textContent=fmtT(done);document.getElementById('sumLeft').textContent=fmtT(left);
+  document.getElementById('sumUrgent').textContent=urgent+'건';document.getElementById('sumRun').textContent=run?run.name:'없음';
 }
 function renderDayProg(){
   ['dayProg','dayProg2'].forEach(id=>{
     const el=document.getElementById(id);if(!el)return;
     if(!tasks.length){el.innerHTML='<span style="font-size:11px;color:var(--text-muted)">기록 없음</span>';return;}
-    el.innerHTML=tasks.map(t=>{
-      const pct=Math.min(100,Math.round((t.elapsed/t.duration)*100));
-      return`<div><div style="display:flex;justify-content:space-between;margin-bottom:2px"><span style="font-size:11px;color:var(--text);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:140px">${esc(t.name)}</span><span style="font-family:var(--mono);font-size:10px;color:var(--text-muted)">${fmtT(t.elapsed)}</span></div><div style="height:3px;background:var(--border);border-radius:2px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${t.type==='recurring'?'var(--purple)':'var(--teal)'};border-radius:2px;transition:width 1s"></div></div></div>`;
-    }).join('');
+    el.innerHTML=tasks.map(t=>{const pct=Math.min(100,Math.round((t.elapsed/t.duration)*100));return`<div><div style="display:flex;justify-content:space-between;margin-bottom:2px"><span style="font-size:11px;color:var(--text);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:140px">${esc(t.name)}</span><span style="font-family:var(--mono);font-size:10px;color:var(--text-muted)">${fmtT(t.elapsed)}</span></div><div style="height:3px;background:var(--border);border-radius:2px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${t.type==='recurring'?'var(--purple)':'var(--teal)'};border-radius:2px;transition:width 1s"></div></div></div>`;}).join('');
   });
 }
 
@@ -1373,27 +1068,16 @@ function switchSbTab(type,el){
   curTypeTab=type;document.querySelectorAll('.type-tab').forEach(b=>b.classList.remove('active'));document.getElementById('tt-'+type).classList.add('active');render();
 }
 function goPage(page,btn){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-'+page).classList.add('active');
-  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
   if(page==='stats')renderStats();
 }
 
 // ══════════════════════════════════════════
 //  RESET
 // ══════════════════════════════════════════
-function confirmResetDay(){
-  showModal('오늘 초기화','오늘 타이머를 모두 0으로 초기화합니다.',()=>{
-    saveSnapshot();tasks.forEach(t=>{t.elapsed=0;t.state='idle';t.startedAt=null;});
-    saveTasks();render();updateSummary();renderDayProg();if(accessToken)syncToDrive();toast('오늘 타이머 초기화됨','success');
-  });
-}
-function confirmResetAll(){
-  showModal('오늘 업무 삭제','오늘의 모든 업무를 삭제합니다.',()=>{
-    tasks=[];saveTasks();render();updateSummary();renderDayProg();if(accessToken)syncToDrive();toast('삭제됨','warning');
-  });
-}
+function confirmResetDay(){showModal('오늘 초기화','오늘 타이머를 모두 0으로 초기화합니다.',()=>{saveSnapshot();tasks.forEach(t=>{t.elapsed=0;t.state='idle';t.startedAt=null;});saveTasks();render();updateSummary();renderDayProg();if(accessToken)syncToDrive();toast('오늘 타이머 초기화됨','success');});}
+function confirmResetAll(){showModal('오늘 업무 삭제','오늘의 모든 업무를 삭제합니다.',()=>{tasks=[];saveTasks();render();updateSummary();renderDayProg();if(accessToken)syncToDrive();toast('삭제됨','warning');});}
 let mCb=null;
 function showModal(title,desc,cb){document.getElementById('mt').textContent=title;document.getElementById('md').textContent=desc;mCb=cb;document.getElementById('movl').style.display='flex';document.getElementById('mok').onclick=()=>{if(mCb)mCb();closeModal();};}
 function closeModal(){document.getElementById('movl').style.display='none';mCb=null;}
@@ -1404,59 +1088,29 @@ function closeModal(){document.getElementById('movl').style.display='none';mCb=n
 function renderMonthLbl(){document.getElementById('monthLbl').textContent=statsMonth.toLocaleDateString('ko-KR',{year:'numeric',month:'long'});}
 function chMonth(d){statsMonth=new Date(statsMonth.getFullYear(),statsMonth.getMonth()+d,1);renderMonthLbl();renderStats();selDay=null;document.getElementById('detDate').textContent='날짜를 선택하세요';document.getElementById('detContent').innerHTML='<div class="no-sel"><div style="font-size:24px;opacity:.28">📅</div><div style="font-size:11px;margin-top:5px">캘린더에서 날짜를<br>클릭하세요</div></div>';}
 function renderStats(){
-  const mk=monthStr(statsMonth),hist=getHist(),md=hist[mk]||{};
-  const days=Object.keys(md),tt={};
-  days.forEach(d=>Object.entries(md[d]).forEach(([k,v])=>{tt[k]=(tt[k]||0)+v;}));
-  const totalSec=Object.values(tt).reduce((a,b)=>a+b,0),avgSec=days.length?Math.round(totalSec/days.length):0;
-  const top=Object.entries(tt).sort((a,b)=>b[1]-a[1])[0];
+  const mk=monthStr(statsMonth),hist=getHist(),md=hist[mk]||{};const days=Object.keys(md),tt={};days.forEach(d=>Object.entries(md[d]).forEach(([k,v])=>{tt[k]=(tt[k]||0)+v;}));
+  const totalSec=Object.values(tt).reduce((a,b)=>a+b,0),avgSec=days.length?Math.round(totalSec/days.length):0;const top=Object.entries(tt).sort((a,b)=>b[1]-a[1])[0];
   document.getElementById('kDays').textContent=days.length;document.getElementById('kTotal').textContent=fmtHM(totalSec);document.getElementById('kAvg').textContent=fmtHM(avgSec);
-  if(top){document.getElementById('kTop').textContent=top[0].split('|||')[0];document.getElementById('kTopS').textContent=fmtHM(top[1]);}
-  else{document.getElementById('kTop').textContent='—';document.getElementById('kTopS').textContent='—';}
+  if(top){document.getElementById('kTop').textContent=top[0].split('|||')[0];document.getElementById('kTopS').textContent=fmtHM(top[1]);}else{document.getElementById('kTop').textContent='—';document.getElementById('kTopS').textContent='—';}
   const tb=document.getElementById('tstBody');
   if(!top){tb.innerHTML='<div class="no-data-row">이 달에 기록이 없습니다</div>';}
-  else{
-    const mx=Math.max(...Object.values(tt));
-    tb.innerHTML=Object.entries(tt).sort((a,b)=>b[1]-a[1]).map(([k,v])=>{
-      const [nm,ct,tp]=k.split('|||'),ad=days.filter(d=>md[d][k]).length,av=ad?Math.round(v/ad):0,bw=Math.round((v/mx)*100);
-      const typeTag=tp==='recurring'?`<span style="font-size:9px;color:var(--purple)">🔁</span>`:`<span style="font-size:9px;color:var(--teal)">📌</span>`;
-      return`<div class="tst-row"><div><div class="tnm">${typeTag} ${esc(nm)}</div><div class="tct">${esc(ct||'일반')}</div></div><div class="tv">${fmtHM(v)}</div><div class="tv">${fmtHM(av)}</div><div class="tv">${ad}일</div><div><div class="bar-bg"><div class="bar-fill" style="width:${bw}%"></div></div></div></div>`;
-    }).join('');
-  }
+  else{const mx=Math.max(...Object.values(tt));tb.innerHTML=Object.entries(tt).sort((a,b)=>b[1]-a[1]).map(([k,v])=>{const[nm,ct,tp]=k.split('|||'),ad=days.filter(d=>md[d][k]).length,av=ad?Math.round(v/ad):0,bw=Math.round((v/mx)*100);const typeTag=tp==='recurring'?`<span style="font-size:9px;color:var(--purple)">🔁</span>`:`<span style="font-size:9px;color:var(--teal)">📌</span>`;return`<div class="tst-row"><div><div class="tnm">${typeTag} ${esc(nm)}</div><div class="tct">${esc(ct||'일반')}</div></div><div class="tv">${fmtHM(v)}</div><div class="tv">${fmtHM(av)}</div><div class="tv">${ad}일</div><div><div class="bar-bg"><div class="bar-fill" style="width:${bw}%"></div></div></div></div>`;}).join('');}
   renderCal(md);
 }
 function renderCal(md){
   const y=statsMonth.getFullYear(),mo=statsMonth.getMonth(),first=new Date(y,mo,1).getDay(),dim=new Date(y,mo+1,0).getDate(),today=todayStr();
   document.getElementById('calDow').innerHTML=['일','월','화','수','목','금','토'].map(d=>`<div class="cal-dow">${d}</div>`).join('');
-  const allT=Object.keys(md).map(d=>Object.values(md[d]).reduce((a,b)=>a+b,0));
-  const mx=allT.length?Math.max(...allT):1;
-  let html='';
-  for(let i=0;i<first;i++)html+='<div class="cday empty"></div>';
-  for(let d=1;d<=dim;d++){
-    const ds=`${y}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const dd=md[ds],tot=dd?Object.values(dd).reduce((a,b)=>a+b,0):0;
-    const isT=ds===today,isSel=ds===selDay,hasD=!!dd&&tot>0;
-    let cls='cday';if(isT)cls+=' today';if(isSel)cls+=' selected';if(hasD)cls+=' has-data';
-    let inner='';
-    if(hasD){const a=(0.25+(Math.min(1,tot/mx)*0.65)).toFixed(2);inner=`<div class="cdot" style="background:rgba(91,141,238,${a})"></div><div class="chrs">${fmtHM(tot)}</div>`;}
-    html+=`<div class="${cls}"${hasD?` onclick="selDay2('${ds}')"`:''}><div class="cdn">${d}</div>${inner}</div>`;
-  }
+  const allT=Object.keys(md).map(d=>Object.values(md[d]).reduce((a,b)=>a+b,0));const mx=allT.length?Math.max(...allT):1;
+  let html='';for(let i=0;i<first;i++)html+='<div class="cday empty"></div>';
+  for(let d=1;d<=dim;d++){const ds=`${y}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;const dd=md[ds],tot=dd?Object.values(dd).reduce((a,b)=>a+b,0):0;const isT=ds===today,isSel=ds===selDay,hasD=!!dd&&tot>0;let cls='cday';if(isT)cls+=' today';if(isSel)cls+=' selected';if(hasD)cls+=' has-data';let inner='';if(hasD){const a=(0.25+(Math.min(1,tot/mx)*0.65)).toFixed(2);inner=`<div class="cdot" style="background:rgba(91,141,238,${a})"></div><div class="chrs">${fmtHM(tot)}</div>`;}html+=`<div class="${cls}"${hasD?` onclick="selDay2('${ds}')"`:''}><div class="cdn">${d}</div>${inner}</div>`;}
   document.getElementById('calGrid').innerHTML=html;
 }
 function selDay2(ds){
-  selDay=ds;
-  const mk=monthStr(statsMonth),hist=getHist(),dd=hist[mk]?.[ds]||{};
+  selDay=ds;const mk=monthStr(statsMonth),hist=getHist(),dd=hist[mk]?.[ds]||{};
   document.getElementById('detDate').textContent=new Date(ds+'T00:00:00').toLocaleDateString('ko-KR',{month:'long',day:'numeric',weekday:'short'});
   const tot=Object.values(dd).reduce((a,b)=>a+b,0);
   if(!tot){document.getElementById('detContent').innerHTML='<div class="no-sel"><div style="font-size:11px;color:var(--text-muted)">기록 없음</div></div>';}
-  else{
-    const mx=Math.max(...Object.values(dd));
-    const colors=['#5b8dee','#5be88a','#e8c84a','#a78bfa','#fb923c','#e85b5b','#2dd4bf','#f472b6'];
-    const items=Object.entries(dd).sort((a,b)=>b[1]-a[1]).map(([k,sec],i)=>{
-      const [nm,ct,tp]=k.split('|||'),pct=Math.round((sec/tot)*100),bw=Math.round((sec/mx)*100),col=colors[i%colors.length];
-      return`<div class="di"><div class="di-nm">${tp==='recurring'?'🔁':'📌'} ${esc(nm)}</div><div class="di-bar-bg"><div class="di-bar-fill" style="width:${bw}%;background:${col}"></div></div><div class="di-meta"><span>${esc(ct||'일반')}</span><span>${fmtHM(sec)} (${pct}%)</span></div></div>`;
-    }).join('');
-    document.getElementById('detContent').innerHTML=`<div class="det-list"><div style="background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:9px 11px;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted)">총 시간</span><span style="font-family:var(--mono);font-size:15px;color:var(--success)">${fmtHM(tot)}</span></div>${items}</div>`;
-  }
+  else{const mx=Math.max(...Object.values(dd));const colors=['#5b8dee','#5be88a','#e8c84a','#a78bfa','#fb923c','#e85b5b','#2dd4bf','#f472b6'];const items=Object.entries(dd).sort((a,b)=>b[1]-a[1]).map(([k,sec],i)=>{const[nm,ct,tp]=k.split('|||'),pct=Math.round((sec/tot)*100),bw=Math.round((sec/mx)*100),col=colors[i%colors.length];return`<div class="di"><div class="di-nm">${tp==='recurring'?'🔁':'📌'} ${esc(nm)}</div><div class="di-bar-bg"><div class="di-bar-fill" style="width:${bw}%;background:${col}"></div></div><div class="di-meta"><span>${esc(ct||'일반')}</span><span>${fmtHM(sec)} (${pct}%)</span></div></div>`;}).join('');document.getElementById('detContent').innerHTML=`<div class="det-list"><div style="background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:9px 11px;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted)">총 시간</span><span style="font-family:var(--mono);font-size:15px;color:var(--success)">${fmtHM(tot)}</span></div>${items}</div>`;}
   renderCal(getHist()[monthStr(statsMonth)]||{});
 }
 
@@ -1464,31 +1118,26 @@ function selDay2(ds){
 //  EXPORT
 // ══════════════════════════════════════════
 function exportToday(){
-  saveSnapshot();const today=todayStr();
-  let txt=`멀티타이머 오늘 로그 — ${today}\n${'='.repeat(42)}\n\n`;
+  saveSnapshot();const today=todayStr();let txt=`멀티타이머 오늘 로그 — ${today}\n${'='.repeat(42)}\n\n`;
   const rec=tasks.filter(t=>t.type==='recurring'),day=tasks.filter(t=>t.type==='daily');
   if(rec.length){txt+=`[반복 업무]\n${'-'.repeat(28)}\n`;rec.forEach((t,i)=>{const pct=Math.min(100,Math.round((t.elapsed/t.duration)*100));txt+=`${i+1}. ${t.name} [${t.category}] | 마감 ${t.deadline} (${daysUntil(t.deadline)}일 남음)\n   할당: ${fmtT(t.duration)} / 경과: ${fmtT(t.elapsed)} (${pct}%)\n\n`;});}
   if(day.length){txt+=`[일일 업무]\n${'-'.repeat(28)}\n`;day.forEach((t,i)=>{const pct=Math.min(100,Math.round((t.elapsed/t.duration)*100));txt+=`${i+1}. ${t.name} [${t.category}]\n   할당: ${fmtT(t.duration)} / 경과: ${fmtT(t.elapsed)} (${pct}%)\n\n`;});}
   dl(`timer-${today}.txt`,txt,'text/plain');toast('로그 저장됨','success');
 }
 function exportCSV(){
-  const mk=monthStr(statsMonth),hist=getHist(),md=hist[mk]||{};
-  if(!Object.keys(md).length){toast('기록 없음','warning');return;}
-  const allK=[...new Set(Object.values(md).flatMap(d=>Object.keys(d)))];
-  const hdr=['날짜',...allK.map(k=>k.split('|||')[0]),'합계'];
+  const mk=monthStr(statsMonth),hist=getHist(),md=hist[mk]||{};if(!Object.keys(md).length){toast('기록 없음','warning');return;}
+  const allK=[...new Set(Object.values(md).flatMap(d=>Object.keys(d)))];const hdr=['날짜',...allK.map(k=>k.split('|||')[0]),'합계'];
   const rows=Object.keys(md).sort().map(date=>{const d=md[date];return[date,...allK.map(k=>d[k]?fmtHM(d[k]):'0h 00m'),fmtHM(Object.values(d).reduce((a,b)=>a+b,0))];});
   dl(`timer-${mk}.csv`,[hdr,...rows].map(r=>r.join(',')).join('\n'),'text/csv');toast('CSV 저장됨','success');
 }
 function exportTxt(){
-  const mk=monthStr(statsMonth),hist=getHist(),md=hist[mk]||{};
-  if(!Object.keys(md).length){toast('기록 없음','warning');return;}
+  const mk=monthStr(statsMonth),hist=getHist(),md=hist[mk]||{};if(!Object.keys(md).length){toast('기록 없음','warning');return;}
   const tt={};Object.values(md).forEach(d=>Object.entries(d).forEach(([k,v])=>{tt[k]=(tt[k]||0)+v;}));
   const days=Object.keys(md).length,total=Object.values(tt).reduce((a,b)=>a+b,0);
   let txt=`멀티타이머 월별 리포트 — ${statsMonth.toLocaleDateString('ko-KR',{year:'numeric',month:'long'})}\n${'='.repeat(50)}\n\n`;
   txt+=`기록 일수: ${days}일 | 총 업무 시간: ${fmtHM(total)} | 일 평균: ${fmtHM(days?Math.round(total/days):0)}\n\n[업무별 누적]\n${'-'.repeat(30)}\n`;
   Object.entries(tt).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=>{const[nm,ct,tp]=k.split('|||'),ad=Object.keys(md).filter(d=>md[d][k]).length;txt+=`${tp==='recurring'?'🔁':'📌'} ${nm} [${ct||'일반'}]: ${fmtHM(v)} / ${ad}일 / 일평균 ${fmtHM(ad?Math.round(v/ad):0)}\n`;});
-  txt+=`\n[일별 상세]\n${'-'.repeat(30)}\n`;
-  Object.keys(md).sort().forEach(date=>{const d=md[date],tot=Object.values(d).reduce((a,b)=>a+b,0);txt+=`\n${date} (총 ${fmtHM(tot)})\n`;Object.entries(d).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=>{txt+=`  · ${k.split('|||')[0]}: ${fmtHM(v)}\n`;});});
+  txt+=`\n[일별 상세]\n${'-'.repeat(30)}\n`;Object.keys(md).sort().forEach(date=>{const d=md[date],tot=Object.values(d).reduce((a,b)=>a+b,0);txt+=`\n${date} (총 ${fmtHM(tot)})\n`;Object.entries(d).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=>{txt+=`  · ${k.split('|||')[0]}: ${fmtHM(v)}\n`;});});
   dl(`timer-report-${mk}.txt`,txt,'text/plain');toast('리포트 저장됨','success');
 }
 function dl(name,content,type){const b=new Blob([content],{type:type+';charset=utf-8'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=name;a.click();URL.revokeObjectURL(u);}
@@ -1502,34 +1151,200 @@ function fmtHM(sec){if(sec<0)sec=0;return`${Math.floor(sec/3600)}h ${String(Math
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
 // ══════════════════════════════════════════
-//  EVENTS
-// ══════════════════════════════════════════
-// ══════════════════════════════════════════
-//  VISIBILITY CHANGE — catch up time when tab comes back
+//  VISIBILITY CHANGE
 // ══════════════════════════════════════════
 document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState==='visible'){
-    const now=Date.now();
-    let changed=false;
+    const now=Date.now();let changed=false;
     tasks.forEach(t=>{
       if(t.state==='running'&&t.startedAt){
         const trueElapsed=(t._baseElapsed||0)+Math.floor((now-t.startedAt)/1000);
-        if(trueElapsed!==t.elapsed){ t.elapsed=trueElapsed; changed=true; }
-        // Check completion after catch-up
-        if(t.elapsed>=t.duration){
-          const wasRunning=true;
-          t.elapsed=t.duration; t.state='done';
-          if(wasRunning){ showDonePopup(t); doNotify(t.name); }
-        }
+        if(trueElapsed!==t.elapsed){t.elapsed=trueElapsed;changed=true;}
+        if(t.elapsed>=t.duration){t.elapsed=t.duration;t.state='done';showDonePopup(t);doNotify(t.name);}
       }
     });
-    if(changed){ render(); updateSummary(); renderDayProg(); saveTasks(); }
+    if(changed){render();updateSummary();renderDayProg();saveTasks();}
   }
 });
 
 document.getElementById('rName').addEventListener('keydown',e=>{if(e.key==='Enter')addRecTask();});
 document.getElementById('dName').addEventListener('keydown',e=>{if(e.key==='Enter')addDayTask();});
 document.getElementById('movl').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
+
+// ══════════════════════════════════════════
+//  ⚖ 오늘 시간 배분 기능
+// ══════════════════════════════════════════
+let allocPcts = {}; // { taskId(string): pct(number) }
+
+function toggleAllocDetail() {
+  const detail = document.getElementById('allocDetail');
+  const btn = document.getElementById('allocToggleBtn');
+  const isHidden = detail.classList.toggle('hidden');
+  btn.textContent = isHidden ? '▾ 펼치기' : '▴ 접기';
+  if (!isHidden) renderAllocList();
+}
+
+function refreshAllocIfOpen() {
+  const detail = document.getElementById('allocDetail');
+  if (detail && !detail.classList.contains('hidden')) renderAllocList();
+}
+
+function renderAllocList() {
+  const recTasks = tasks.filter(t => t.type === 'recurring' && t.state !== 'done');
+  const list = document.getElementById('allocList');
+  const applyBtn = document.getElementById('allocApplyBtn');
+
+  if (!recTasks.length) {
+    list.innerHTML = '<div class="alloc-empty">반복 업무를 추가하면<br>여기서 비중을 설정할 수 있습니다</div>';
+    if (applyBtn) applyBtn.disabled = true;
+    updateAllocTotal();
+    return;
+  }
+
+  // 신규 task에만 균등 배분값 부여 (기존 입력값은 유지)
+  const defaultPct = Math.floor(100 / recTasks.length);
+  recTasks.forEach((t, i) => {
+    const key = String(t.id);
+    if (allocPcts[key] === undefined) {
+      allocPcts[key] = (i === 0) ? 100 - defaultPct * (recTasks.length - 1) : defaultPct;
+    }
+  });
+
+  // 삭제된 task 정리
+  const validIds = new Set(recTasks.map(t => String(t.id)));
+  Object.keys(allocPcts).forEach(id => { if (!validIds.has(id)) delete allocPcts[id]; });
+
+  list.innerHTML = recTasks.map(t => {
+    const key = String(t.id);
+    const pct = allocPcts[key] !== undefined ? allocPcts[key] : 0;
+    const sec = calcAllocSec(pct);
+    const barW = Math.min(100, pct);
+    return `<div class="alloc-item">
+      <div class="alloc-item-row">
+        <span class="alloc-item-name" title="${esc(t.name)}">${esc(t.name)}</span>
+        <div class="alloc-pct-wrap">
+          <input class="alloc-item-pct" type="number" min="0" max="100" value="${pct}"
+            onchange="updateAllocPct('${key}', this.value)"
+            oninput="updateAllocPct('${key}', this.value)">
+          <span class="alloc-pct-unit">%</span>
+        </div>
+        <span class="alloc-item-result" id="alloc-res-${key}">${fmtAllocTime(sec)}</span>
+      </div>
+      <div class="alloc-bar"><div class="alloc-bar-fill" id="alloc-bar-${key}" style="width:${barW}%"></div></div>
+    </div>`;
+  }).join('');
+
+  updateAllocTotal();
+}
+
+function calcAllocSec(pct) {
+  const h = parseInt(document.getElementById('availH').value) || 0;
+  const m = parseInt(document.getElementById('availM').value) || 0;
+  return Math.round((h * 3600 + m * 60) * pct / 100);
+}
+
+function fmtAllocTime(sec) {
+  if (sec <= 0) return '—';
+  const h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60);
+  if (h > 0 && m > 0) return `${h}h ${m}m`;
+  if (h > 0) return `${h}h`;
+  return `${m}m`;
+}
+
+function updateAllocPct(key, val) {
+  allocPcts[key] = Math.max(0, Math.min(100, parseInt(val) || 0));
+  const sec = calcAllocSec(allocPcts[key]);
+  const resEl = document.getElementById('alloc-res-' + key);
+  const barEl = document.getElementById('alloc-bar-' + key);
+  if (resEl) resEl.textContent = fmtAllocTime(sec);
+  if (barEl) barEl.style.width = Math.min(100, allocPcts[key]) + '%';
+  updateAllocTotal();
+}
+
+function updateAllocTotal() {
+  const total = Object.values(allocPcts).reduce((a, b) => a + Number(b), 0);
+  const el = document.getElementById('allocTotalVal');
+  const applyBtn = document.getElementById('allocApplyBtn');
+  const hintEl = document.getElementById('allocHint');
+  if (!el) return;
+
+  const h = parseInt(document.getElementById('availH').value) || 0;
+  const m = parseInt(document.getElementById('availM').value) || 0;
+  const availSec = h * 3600 + m * 60;
+
+  // 가용시간 표시
+  const dispEl = document.getElementById('availDisplay');
+  if (dispEl) dispEl.textContent = '= ' + fmtAllocTime(availSec);
+
+  el.textContent = total + '%';
+  el.className = 'alloc-total-val ' + (total === 100 ? 'ok' : total > 100 ? 'over' : 'warn');
+
+  const recTasks = tasks.filter(t => t.type === 'recurring' && t.state !== 'done');
+  if (applyBtn) {
+    const canApply = availSec > 0 && total > 0 && total <= 100 && recTasks.length > 0;
+    applyBtn.disabled = !canApply;
+    if (total > 100) applyBtn.textContent = `⚠ 합계 ${total}% — 초과됨`;
+    else if (total < 100 && total > 0) applyBtn.textContent = `⚖ 적용 (${total}% · 미배분 ${100-total}%)`;
+    else if (canApply) applyBtn.textContent = `✅ ${fmtAllocTime(availSec)} 기준으로 적용`;
+    else applyBtn.textContent = '⚖ 오늘 시간에 적용';
+  }
+
+  // 힌트: 배분 결과 총합 표시
+  if (hintEl && total > 0 && availSec > 0) {
+    const allocatedSec = Math.round(availSec * total / 100);
+    hintEl.textContent = `총 배분: ${fmtAllocTime(allocatedSec)} / ${fmtAllocTime(availSec)}`;
+  } else if (hintEl) {
+    hintEl.textContent = '';
+  }
+}
+
+function applyAllocation() {
+  const h = parseInt(document.getElementById('availH').value) || 0;
+  const m = parseInt(document.getElementById('availM').value) || 0;
+  const availSec = h * 3600 + m * 60;
+  if (availSec <= 0) { toast('가용시간을 입력하세요', 'warning'); return; }
+
+  const total = Object.values(allocPcts).reduce((a, b) => a + Number(b), 0);
+  if (total > 100) { toast(`비중 합계가 ${total}%입니다. 100% 이하로 맞춰주세요`, 'warning'); return; }
+  if (total <= 0) { toast('비중(%)을 입력하세요', 'warning'); return; }
+
+  let changed = 0;
+  const results = [];
+  tasks.forEach(t => {
+    const key = String(t.id);
+    if (t.type === 'recurring' && allocPcts[key] !== undefined && allocPcts[key] > 0) {
+      const newDur = Math.round(availSec * allocPcts[key] / 100);
+      if (newDur > 0) {
+        t.duration = newDur;
+        results.push(`${t.name}: ${fmtAllocTime(newDur)}`);
+        changed++;
+      }
+    }
+  });
+
+  if (changed > 0) {
+    saveTasks(); render(); updateSummary(); renderDayProg();
+    if (accessToken) syncToDrive();
+    toast(`✅ ${changed}개 업무 시간 적용됨`, 'success');
+    renderAllocList(); // 적용 후 목록 갱신
+  } else {
+    toast('적용할 반복 업무 없음', 'warning');
+  }
+}
+
+// 가용시간 입력 변경 → 계산 결과 즉시 업데이트
+function onAvailChange() {
+  const detail = document.getElementById('allocDetail');
+  if (!detail || detail.classList.contains('hidden')) return;
+  const recTasks = tasks.filter(t => t.type === 'recurring' && t.state !== 'done');
+  recTasks.forEach(t => {
+    const key = String(t.id);
+    const sec = calcAllocSec(allocPcts[key] || 0);
+    const resEl = document.getElementById('alloc-res-' + key);
+    if (resEl) resEl.textContent = fmtAllocTime(sec);
+  });
+  updateAllocTotal();
+}
 
 init();
 </script>
