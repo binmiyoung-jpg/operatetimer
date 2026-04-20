@@ -777,9 +777,24 @@ function handleTokenResponse(resp) {
 async function validateToken(token) {
   try {
     const r=await fetch('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token='+token);
-    if(!r.ok)throw new Error();
-    fetchUserInfo();document.getElementById('manualSyncBtn').style.display='';setSyncStatus('ok');syncFromDrive();
-  } catch{accessToken=null;sessionStorage.removeItem(K_TOKEN);updateAuthUI(null);}
+    if(!r.ok) throw new Error('expired');
+    fetchUserInfo();
+    document.getElementById('manualSyncBtn').style.display='';
+    setSyncStatus('ok');
+    syncFromDrive();
+  } catch(e) {
+    // 토큰 만료 — 저장된 토큰 모두 삭제 후 자동 재로그인 시도
+    accessToken=null;
+    sessionStorage.removeItem(K_TOKEN);
+    localStorage.removeItem(K_TOKEN+'_persist');
+    updateAuthUI(null);
+    // GSI tokenClient로 조용히 재인증 시도
+    if(tokenClient) {
+      try {
+        tokenClient.requestAccessToken({prompt:''});  // prompt:'' = 사용자 개입 최소화
+      } catch(e2) { /* 실패 시 사용자가 수동 로그인 */ }
+    }
+  }
 }
 async function fetchUserInfo() {
   if(!accessToken)return;
@@ -807,7 +822,7 @@ function setSyncStatus(status,msg) {
   const bar=document.getElementById('syncBar'),barDot=document.getElementById('syncBarDot'),barMsg=document.getElementById('syncBarMsg'),authDot=document.getElementById('authDot');
   if(status==='syncing'){bar.classList.remove('hidden');barDot.className='sync-bar-dot syncing';authDot.className='auth-status syncing';barMsg.textContent=msg||'동기화 중...';}
   else if(status==='ok'){bar.classList.remove('hidden');barDot.className='sync-bar-dot ok';authDot.className='auth-status synced';const now=new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});barMsg.textContent=msg||`마지막 동기화: ${now}`;setTimeout(()=>bar.classList.add('hidden'),4000);}
-  else if(status==='error'){bar.classList.remove('hidden');barDot.className='sync-bar-dot err';authDot.className='auth-status error';barMsg.textContent=msg||'동기화 실패';}
+  else if(status==='error'){bar.classList.remove('hidden');barDot.className='sync-bar-dot err';authDot.className='auth-status error';barMsg.textContent=msg||'동기화 실패 — Google 로그인 버튼을 눌러주세요';}
 }
 
 // ══════════════════════════════════════════
@@ -822,8 +837,17 @@ async function readDriveFile(fileId) {
 }
 async function writeDriveFile(data) {
   const body=JSON.stringify(data),contentType='application/json';
-  if(driveFileId){const r=await fetch(`https://www.googleapis.com/upload/drive/v3/files/${driveFileId}?uploadType=media`,{method:'PATCH',headers:{Authorization:'Bearer '+accessToken,'Content-Type':contentType},body});return r.ok;}
-  else{const meta=JSON.stringify({name:DRIVE_FILE,parents:['appDataFolder']});const form=new FormData();form.append('metadata',new Blob([meta],{type:'application/json'}));form.append('file',new Blob([body],{type:contentType}));const r=await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id',{method:'POST',headers:{Authorization:'Bearer '+accessToken},body:form});const d=await r.json();if(d.id){driveFileId=d.id;return true;}return false;}
+  if(driveFileId){
+    const r=await fetch(`https://www.googleapis.com/upload/drive/v3/files/${driveFileId}?uploadType=media`,{method:'PATCH',headers:{Authorization:'Bearer '+accessToken,'Content-Type':contentType},body});
+    if(r.status===401){accessToken=null;localStorage.removeItem(K_TOKEN+'_persist');sessionStorage.removeItem(K_TOKEN);updateAuthUI(null);throw new Error('401');}
+    if(r.status===404){driveFileId=null;return writeDriveFile(data);} // 파일 없으면 새로 생성
+    return r.ok;
+  } else {
+    const meta=JSON.stringify({name:DRIVE_FILE,parents:['appDataFolder']});const form=new FormData();form.append('metadata',new Blob([meta],{type:'application/json'}));form.append('file',new Blob([body],{type:contentType}));
+    const r=await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id',{method:'POST',headers:{Authorization:'Bearer '+accessToken},body:form});
+    if(r.status===401){accessToken=null;localStorage.removeItem(K_TOKEN+'_persist');sessionStorage.removeItem(K_TOKEN);updateAuthUI(null);throw new Error('401');}
+    const d=await r.json();if(d.id){driveFileId=d.id;return true;}return false;
+  }
 }
 
 // ══════════════════════════════════════════
@@ -835,9 +859,31 @@ async function syncFromDrive() {
   catch(e){setSyncStatus('error','동기화 실패: '+e.message);}
 }
 async function syncToDrive() {
-  if(!accessToken)return;setSyncStatus('syncing','Drive에 저장 중...');
-  try{saveSnapshot();const payload={tasks,recDefs,history:getHist(),savedDate:todayStr(),lastModified:Date.now()};const ok=await writeDriveFile(payload);if(ok)setSyncStatus('ok');else setSyncStatus('error','저장 실패');}
-  catch(e){setSyncStatus('error','저장 실패: '+e.message);}
+  if(!accessToken) return;
+  setSyncStatus('syncing','Drive에 저장 중...');
+  try {
+    saveSnapshot();
+    const payload={tasks,recDefs,history:getHist(),savedDate:todayStr(),lastModified:Date.now()};
+    const ok=await writeDriveFile(payload);
+    if(ok) setSyncStatus('ok');
+    else {
+      // 저장 실패 시 토큰 재검증 후 1회 재시도
+      setSyncStatus('syncing','재시도 중...');
+      await new Promise(res=>setTimeout(res,1500));
+      if(accessToken) {
+        const ok2=await writeDriveFile(payload);
+        if(ok2) setSyncStatus('ok');
+        else { setSyncStatus('error','저장 실패 — 재로그인 필요'); accessToken=null; updateAuthUI(null); }
+      }
+    }
+  } catch(e) {
+    if(e.message && e.message.includes('401')) {
+      accessToken=null; updateAuthUI(null);
+      setSyncStatus('error','로그인이 만료됐습니다. 다시 로그인해주세요');
+    } else {
+      setSyncStatus('error','저장 실패: '+e.message);
+    }
+  }
 }
 function mergeRemote(remote) {
   if(!remote)return;
