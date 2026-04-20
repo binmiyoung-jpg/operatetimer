@@ -628,6 +628,7 @@ const K_RECDEF  = 'mt_recdef_v5';
 const K_CLIENT  = 'mt_client_id';
 const K_TOKEN   = 'mt_access_token';
 const K_ALLOC   = 'mt_alloc_v1'; // 배분 설정 저장
+const K_DELETED = 'mt_deleted_v1'; // 삭제된 recDef id 목록
 
 // ══════════════════════════════════════════
 //  STATE
@@ -863,7 +864,7 @@ async function syncToDrive() {
   setSyncStatus('syncing','Drive에 저장 중...');
   try {
     saveSnapshot();
-    const payload={tasks,recDefs,history:getHist(),savedDate:todayStr(),lastModified:Date.now()};
+    const payload={tasks,recDefs,history:getHist(),savedDate:todayStr(),lastModified:Date.now(),deletedIds:[...getDeleted()]};
     const ok=await writeDriveFile(payload);
     if(ok) setSyncStatus('ok');
     else {
@@ -885,24 +886,66 @@ async function syncToDrive() {
     }
   }
 }
+function getDeleted(){try{return new Set(JSON.parse(localStorage.getItem(K_DELETED)||'[]'));}catch{return new Set();}}
+function addDeleted(id){const s=getDeleted();s.add(String(id));localStorage.setItem(K_DELETED,JSON.stringify([...s]));}
+
 function mergeRemote(remote) {
   if(!remote)return;
+  // 히스토리 병합
   const localHist=getHist(),remoteHist=remote.history||{},merged={};
   const allMonths=new Set([...Object.keys(localHist),...Object.keys(remoteHist)]);
-  allMonths.forEach(mk=>{merged[mk]={};const lm=localHist[mk]||{},rm=remoteHist[mk]||{};const allDays=new Set([...Object.keys(lm),...Object.keys(rm)]);allDays.forEach(d=>{merged[mk][d]={};const ld=lm[d]||{},rd=rm[d]||{};const allKeys=new Set([...Object.keys(ld),...Object.keys(rd)]);allKeys.forEach(k=>{merged[mk][d][k]=Math.max(ld[k]||0,rd[k]||0);});});});
+  allMonths.forEach(mk=>{
+    merged[mk]={};
+    const lm=localHist[mk]||{},rm=remoteHist[mk]||{};
+    const allDays=new Set([...Object.keys(lm),...Object.keys(rm)]);
+    allDays.forEach(d=>{
+      merged[mk][d]={};
+      const ld=lm[d]||{},rd=rm[d]||{};
+      const allKeys=new Set([...Object.keys(ld),...Object.keys(rd)]);
+      allKeys.forEach(k=>{merged[mk][d][k]=Math.max(ld[k]||0,rd[k]||0);});
+    });
+  });
   localStorage.setItem(K_HIST,JSON.stringify(merged));
-  const localRecDefs=recDefs,remoteRecDefs=remote.recDefs||{},recMap={};
-  localRecDefs.forEach(d=>recMap[d.id]=d);remoteRecDefs.forEach&&remoteRecDefs.forEach(d=>{if(!recMap[d.id])recMap[d.id]=d;});
-  const nameMap={};Object.values(recMap).forEach(d=>{const key=d.name+'|||'+(d.category||'일반');if(!nameMap[key]||d.deadline>nameMap[key].deadline)nameMap[key]=d;});
-  recDefs=Object.values(nameMap);saveRecDefs();
+
+  // 삭제 목록 — 로컬+리모트 합산
+  const deletedIds=getDeleted();
+  const remoteDeleted=new Set(remote.deletedIds||[]);
+  remoteDeleted.forEach(id=>deletedIds.add(String(id)));
+  localStorage.setItem(K_DELETED,JSON.stringify([...deletedIds]));
+
+  // recDefs 병합 — 삭제된 항목 제외
+  const localRecDefs=recDefs, remoteRecDefs=remote.recDefs||[], recMap={};
+  localRecDefs.forEach(d=>{ if(!deletedIds.has(String(d.id))) recMap[d.id]=d; });
+  if(remoteRecDefs.forEach) remoteRecDefs.forEach(d=>{
+    if(!deletedIds.has(String(d.id)) && !recMap[d.id]) recMap[d.id]=d;
+  });
+  const nameMap={};
+  Object.values(recMap).forEach(d=>{
+    const key=d.name+'|||'+(d.category||'일반');
+    if(!nameMap[key]||d.deadline>nameMap[key].deadline) nameMap[key]=d;
+  });
+  recDefs=Object.values(nameMap); saveRecDefs();
+
+  // tasks 병합
   const today=todayStr();
   if(remote.savedDate===today&&remote.tasks){
-    const remTasks=remote.tasks;
-    tasks.forEach(lt=>{const rt=remTasks.find(r=>r.name===lt.name&&r.type===lt.type);if(rt&&rt.elapsed>lt.elapsed){lt.elapsed=rt.elapsed;lt._baseElapsed=rt.elapsed;}});
-    remTasks.forEach(rt=>{const exists=tasks.find(lt=>lt.name===rt.name&&lt.type===rt.type);if(!exists)tasks.push({...rt,state:'idle',startedAt:null,_baseElapsed:rt.elapsed||0});});
-    const taskMap={};tasks.forEach(t=>{const key=t.name+'|||'+t.type;if(!taskMap[key]||t.elapsed>taskMap[key].elapsed)taskMap[key]=t;});tasks=Object.values(taskMap);saveTasks();
+    const remTasks=(remote.tasks||[]).filter(rt=>!deletedIds.has(String(rt.defId||'')) && !deletedIds.has(String(rt.id||'')));
+    tasks.forEach(lt=>{
+      const rt=remTasks.find(r=>r.name===lt.name&&r.type===lt.type);
+      if(rt&&rt.elapsed>lt.elapsed){lt.elapsed=rt.elapsed;lt._baseElapsed=rt.elapsed;}
+    });
+    remTasks.forEach(rt=>{
+      const exists=tasks.find(lt=>lt.name===rt.name&&lt.type===rt.type);
+      if(!exists) tasks.push({...rt,state:'idle',startedAt:null,_baseElapsed:rt.elapsed||0});
+    });
+    const taskMap={};
+    tasks.forEach(t=>{const key=t.name+'|||'+t.type;if(!taskMap[key]||t.elapsed>taskMap[key].elapsed)taskMap[key]=t;});
+    tasks=Object.values(taskMap).filter(t=>!deletedIds.has(String(t.defId||''))&&!deletedIds.has(String(t.id||'')));
+    saveTasks();
   } else if(remote.savedDate&&remote.savedDate!==today){
-    tasks=tasks.filter(t=>t.type==='recurring'&&(t.deadline||'9999')>=today);tasks.forEach(t=>{t.elapsed=0;t.state='idle';t.startedAt=null;t._baseElapsed=0;});saveTasks();
+    tasks=tasks.filter(t=>t.type==='recurring'&&(t.deadline||'9999')>=today&&!deletedIds.has(String(t.defId||'')));
+    tasks.forEach(t=>{t.elapsed=0;t.state='idle';t.startedAt=null;t._baseElapsed=0;});
+    saveTasks();
   }
   toast('동기화 완료 ☁','success');
 }
@@ -1032,7 +1075,10 @@ function deleteTask(id){
   const t=tasks.find(t=>t.id===id);if(!t)return;
   if(t.type==='recurring'){
     showModal(`반복 업무 삭제`,`"${t.name}" 반복 업무를 삭제하면 내일부터도 생성되지 않습니다. 삭제하시겠습니까?`,()=>{
-      recDefs=recDefs.filter(d=>d.id!==t.defId);saveRecDefs();tasks=tasks.filter(x=>x.id!==id);
+      if(t.defId) addDeleted(t.defId); // 삭제 목록에 등록
+      addDeleted(t.id);
+      recDefs=recDefs.filter(d=>d.id!==t.defId);saveRecDefs();
+      tasks=tasks.filter(x=>x.id!==id);
       saveTasks();render();updateSummary();renderDayProg();refreshAllocIfOpen();if(accessToken)syncToDrive();
     });
   } else {tasks=tasks.filter(x=>x.id!==id);saveTasks();render();updateSummary();renderDayProg();if(accessToken)syncToDrive();}
