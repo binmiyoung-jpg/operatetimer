@@ -713,107 +713,200 @@ function skipSetup() {
 let tokenClient=null, gsiAttempts=0;
 const GSI_MAX=20;
 
+// ── Google Auth 초기화 ──
 function initGoogleAuth(clientId) {
   if(!window.google||!window.google.accounts){
     gsiAttempts++;
-    if(gsiAttempts>=GSI_MAX){setupManualOAuth(clientId);return;}
-    setTimeout(()=>initGoogleAuth(clientId),500);return;
+    if(gsiAttempts>=GSI_MAX){ setupManualOAuth(clientId); return; }
+    setTimeout(()=>initGoogleAuth(clientId),500); return;
   }
   gsiAttempts=0;
   try {
     tokenClient=google.accounts.oauth2.initTokenClient({
-      client_id:clientId,scope:DRIVE_SCOPE,callback:handleTokenResponse,
-      error_callback:(e)=>{console.error('GSI error',e);setupManualOAuth(clientId);}
+      client_id: clientId,
+      scope: DRIVE_SCOPE+' https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
+      callback: handleTokenResponse,
+      error_callback: (e)=>{ console.warn('GSI error',e); setupManualOAuth(clientId); }
     });
-  } catch(e){setupManualOAuth(clientId);return;}
+  } catch(e){ setupManualOAuth(clientId); return; }
+
+  // 저장된 토큰 복원 시도
   const saved=sessionStorage.getItem(K_TOKEN)||localStorage.getItem(K_TOKEN+'_persist');
-  if(saved){accessToken=saved;validateToken(accessToken);}
+  if(saved){ accessToken=saved; validateToken(accessToken); }
+  else {
+    // 저장 토큰 없으면 조용히 재로그인 시도 (사용자 개입 없이)
+    silentSignIn(clientId);
+  }
 }
+
+// 사용자 개입 없는 조용한 재로그인
+function silentSignIn(clientId) {
+  if(!tokenClient) return;
+  try { tokenClient.requestAccessToken({prompt:'none'}); }
+  catch(e) { /* 실패 시 수동 로그인 필요 */ }
+}
+
+// iOS/팝업차단 환경용 redirect 방식
 function setupManualOAuth(clientId) {
   window._oauthClientId=clientId;
   const btn=document.getElementById('signInBtn');
-  if(btn){btn.textContent='Google 로그인';btn.onclick=googleSignInRedirect;}
+  if(btn){ btn.textContent='Google 로그인'; btn.onclick=googleSignInRedirect; }
+  // 저장 토큰이 있으면 그대로 사용
+  const saved=sessionStorage.getItem(K_TOKEN)||localStorage.getItem(K_TOKEN+'_persist');
+  if(saved){ accessToken=saved; validateToken(accessToken); }
 }
+
 function googleSignInRedirect() {
   const clientId=HARDCODED_CLIENT_ID||window._oauthClientId||localStorage.getItem(K_CLIENT);
-  if(!clientId){toast('Client ID가 없습니다','error');return;}
-  const redirectUri=encodeURIComponent(window.location.href.split('?')[0].split('#')[0]);
+  if(!clientId){ toast('Client ID가 없습니다','error'); return; }
+  // 현재 URL을 redirect_uri로 사용 (hash/query 제거)
+  const base=window.location.href.split('?')[0].split('#')[0];
+  const redirectUri=encodeURIComponent(base);
   const scope=encodeURIComponent(DRIVE_SCOPE+' https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email');
-  const url=`https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}&include_granted_scopes=true`;
+  const url=`https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}&include_granted_scopes=true&prompt=select_account`;
   window.location.href=url;
 }
+
 function checkOAuthRedirectToken() {
   const hash=window.location.hash;
-  if(!hash)return;
-  const params=new URLSearchParams(hash.replace('#',''));
+  if(!hash) return;
+  const params=new URLSearchParams(hash.replace(/^#/,''));
   const token=params.get('access_token');
+  const expiresIn=parseInt(params.get('expires_in')||'3600');
   if(token){
     accessToken=token;
     sessionStorage.setItem(K_TOKEN,token);
     localStorage.setItem(K_TOKEN+'_persist',token);
-    history.replaceState(null,null,window.location.pathname);
-    fetchUserInfo();syncFromDrive();setSyncStatus('ok');
+    // 만료 시각 저장 (만료 5분 전에 갱신 예약)
+    const expireAt=Date.now()+(expiresIn-300)*1000;
+    localStorage.setItem(K_TOKEN+'_expire', String(expireAt));
+    history.replaceState(null,null,window.location.pathname+window.location.search);
+    fetchUserInfo();
+    syncFromDrive();
+    setSyncStatus('ok');
     document.getElementById('manualSyncBtn').style.display='';
     toast('Google 로그인 완료! ☁','success');
+    scheduleTokenRefresh(expiresIn-300);
   }
 }
+
+// 토큰 만료 전 자동 갱신 스케줄
+function scheduleTokenRefresh(delaySeconds) {
+  if(delaySeconds<=0) delaySeconds=60;
+  setTimeout(()=>{
+    if(!accessToken) return;
+    if(tokenClient){
+      try{ tokenClient.requestAccessToken({prompt:'none'}); return; }
+      catch(e){}
+    }
+    // redirect 방식은 자동갱신 불가 — 상태만 알림
+    setSyncStatus('error','로그인이 곧 만료됩니다. 다시 로그인 해주세요');
+    updateAuthUI(null);
+    accessToken=null;
+  }, delaySeconds*1000);
+}
+
 function googleSignIn() {
-  if(tokenClient){try{tokenClient.requestAccessToken();return;}catch(e){}}
+  if(tokenClient){
+    try{ tokenClient.requestAccessToken({prompt:''}); return; }
+    catch(e){}
+  }
   googleSignInRedirect();
 }
+
 function googleSignOut() {
-  if(accessToken)google.accounts.oauth2.revoke(accessToken,()=>{});
-  accessToken=null;driveFileId=null;
+  if(window.google&&window.google.accounts&&accessToken){
+    try{ google.accounts.oauth2.revoke(accessToken,()=>{}); }catch(e){}
+  }
+  accessToken=null; driveFileId=null;
   sessionStorage.removeItem(K_TOKEN);
-  updateAuthUI(null);toast('로그아웃됨','warning');
+  localStorage.removeItem(K_TOKEN+'_persist');
+  localStorage.removeItem(K_TOKEN+'_expire');
+  updateAuthUI(null);
+  toast('로그아웃됨','warning');
 }
+
 function handleTokenResponse(resp) {
-  if(resp.error){toast('로그인 실패: '+resp.error,'error');return;}
+  if(resp.error){
+    if(resp.error==='interaction_required'||resp.error==='consent_required'){
+      // 사용자 개입 필요 — 수동 로그인 유도
+      updateAuthUI(null); return;
+    }
+    toast('로그인 실패: '+resp.error,'error'); return;
+  }
   accessToken=resp.access_token;
   sessionStorage.setItem(K_TOKEN,accessToken);
-  fetchUserInfo();syncFromDrive();setSyncStatus('ok');
+  localStorage.setItem(K_TOKEN+'_persist',accessToken);
+  const expireAt=Date.now()+(( resp.expires_in||3600)-300)*1000;
+  localStorage.setItem(K_TOKEN+'_expire',String(expireAt));
+  fetchUserInfo();
+  syncFromDrive();
+  setSyncStatus('ok');
   document.getElementById('manualSyncBtn').style.display='';
-  toast('Google 로그인 완료! 데이터 동기화 중...','success');
+  scheduleTokenRefresh((resp.expires_in||3600)-300);
+  toast('Google 로그인 완료!','success');
 }
+
 async function validateToken(token) {
   try {
     const r=await fetch('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token='+token);
     if(!r.ok) throw new Error('expired');
+    const info=await r.json();
     fetchUserInfo();
     document.getElementById('manualSyncBtn').style.display='';
     setSyncStatus('ok');
     syncFromDrive();
-  } catch(e) {
-    // 토큰 만료 — 저장된 토큰 모두 삭제 후 자동 재로그인 시도
+    // 남은 만료시간으로 갱신 예약
+    const remaining=parseInt(info.expires_in||'3600')-300;
+    scheduleTokenRefresh(remaining>0?remaining:60);
+  } catch {
     accessToken=null;
     sessionStorage.removeItem(K_TOKEN);
     localStorage.removeItem(K_TOKEN+'_persist');
     updateAuthUI(null);
-    // GSI tokenClient로 조용히 재인증 시도
-    if(tokenClient) {
-      try {
-        tokenClient.requestAccessToken({prompt:''});  // prompt:'' = 사용자 개입 최소화
-      } catch(e2) { /* 실패 시 사용자가 수동 로그인 */ }
+    // 조용히 재로그인 시도
+    const cid=HARDCODED_CLIENT_ID||localStorage.getItem(K_CLIENT);
+    if(tokenClient && cid){
+      try{ tokenClient.requestAccessToken({prompt:'none'}); }catch(e){}
     }
   }
 }
+
 async function fetchUserInfo() {
-  if(!accessToken)return;
-  try{const r=await fetch('https://www.googleapis.com/oauth2/v2/userinfo',{headers:{Authorization:'Bearer '+accessToken}});const u=await r.json();updateAuthUI(u);}catch{}
+  if(!accessToken) return;
+  try{
+    const r=await fetch('https://www.googleapis.com/oauth2/v2/userinfo',{headers:{Authorization:'Bearer '+accessToken}});
+    if(!r.ok) throw new Error();
+    const u=await r.json();
+    updateAuthUI(u);
+  }catch{ updateAuthUI({name:'로그인됨'}); }
 }
+
 function updateAuthUI(user) {
-  const area=document.getElementById('authArea'),dot=document.getElementById('authDot'),nameEl=document.getElementById('authName'),signInBtn=document.getElementById('signInBtn');
+  const area=document.getElementById('authArea'),dot=document.getElementById('authDot'),
+        nameEl=document.getElementById('authName'),signInBtn=document.getElementById('signInBtn');
   if(user){
-    nameEl.textContent=user.name||user.email||'로그인됨';dot.className='auth-status synced';
-    signInBtn.textContent='로그아웃';signInBtn.className='sync-btn signout';signInBtn.onclick=googleSignOut;
-    if(user.picture&&!document.getElementById('authAvatar')){const img=document.createElement('img');img.id='authAvatar';img.className='auth-avatar';img.src=user.picture;area.insertBefore(img,nameEl);}
+    nameEl.textContent=user.name||user.email||'로그인됨';
+    dot.className='auth-status synced';
+    signInBtn.textContent='로그아웃';
+    signInBtn.className='sync-btn signout';
+    signInBtn.onclick=googleSignOut;
+    if(user.picture&&!document.getElementById('authAvatar')){
+      const img=document.createElement('img');
+      img.id='authAvatar';img.className='auth-avatar';img.src=user.picture;
+      area.insertBefore(img,nameEl);
+    }
   } else {
-    nameEl.textContent='비로그인';dot.className='auth-status';
-    signInBtn.textContent='Google 로그인';signInBtn.className='sync-btn signin';signInBtn.onclick=googleSignIn;
+    nameEl.textContent='비로그인';
+    dot.className='auth-status';
+    signInBtn.textContent='Google 로그인';
+    signInBtn.className='sync-btn signin';
+    signInBtn.onclick=googleSignIn;
     const av=document.getElementById('authAvatar');if(av)av.remove();
     document.getElementById('manualSyncBtn').style.display='none';
   }
 }
+
 
 // ══════════════════════════════════════════
 //  SYNC STATUS UI
