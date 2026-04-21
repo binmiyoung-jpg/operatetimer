@@ -362,6 +362,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);height:100vh
       <button class="sync-btn signin" id="signInBtn" onclick="googleSignIn()">Google 로그인</button>
     </div>
     <button class="hbtn" id="manualSyncBtn" onclick="manualSync()" style="display:none">☁ 동기화</button>
+    <button class="hbtn" id="diagBtn" onclick="runDiag()" style="display:none;border-color:var(--accent2);color:var(--accent2)">🔍 진단</button>
     <button class="hbtn" onclick="confirmResetDay()">🔄 초기화</button>
     <button class="hbtn" onclick="exportToday()">📋 로그</button>
   </div>
@@ -784,7 +785,7 @@ function checkOAuthRedirectToken() {
     fetchUserInfo();
     syncFromDrive();
     setSyncStatus('ok');
-    document.getElementById('manualSyncBtn').style.display='';
+    document.getElementById('manualSyncBtn').style.display=''; const db=document.getElementById('diagBtn'); if(db) db.style.display='';
     toast('Google 로그인 완료! ☁','success');
     scheduleTokenRefresh(expiresIn-300);
   }
@@ -842,7 +843,7 @@ function handleTokenResponse(resp) {
   fetchUserInfo();
   syncFromDrive();
   setSyncStatus('ok');
-  document.getElementById('manualSyncBtn').style.display='';
+  document.getElementById('manualSyncBtn').style.display=''; const db=document.getElementById('diagBtn'); if(db) db.style.display='';
   scheduleTokenRefresh((resp.expires_in||3600)-300);
   toast('Google 로그인 완료!','success');
 }
@@ -853,7 +854,7 @@ async function validateToken(token) {
     if(!r.ok) throw new Error('expired');
     const info=await r.json();
     fetchUserInfo();
-    document.getElementById('manualSyncBtn').style.display='';
+    document.getElementById('manualSyncBtn').style.display=''; const db=document.getElementById('diagBtn'); if(db) db.style.display='';
     setSyncStatus('ok');
     syncFromDrive();
     // 남은 만료시간으로 갱신 예약
@@ -1043,6 +1044,40 @@ function mergeRemote(remote) {
   toast('동기화 완료 ☁','success');
 }
 async function manualSync(){await syncFromDrive();await syncToDrive();}
+
+// ── 동기화 진단 ──
+async function runDiag() {
+  let msg = '=== 동기화 진단 ===\n';
+  msg += `토큰: ${accessToken ? '있음 ('+accessToken.slice(0,12)+'...)' : '없음'}\n`;
+  msg += `Drive File ID: ${driveFileId || '없음'}\n`;
+  msg += `오늘 날짜: ${todayStr()}\n`;
+  msg += `로컬 tasks: ${tasks.length}개\n`;
+  msg += `로컬 recDefs: ${recDefs.length}개\n`;
+
+  if(!accessToken){ alert(msg + '\n❌ 토큰 없음 — 로그인 필요'); return; }
+
+  try {
+    // 토큰 유효성 확인
+    const tv = await fetch('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token='+accessToken);
+    const ti = await tv.json();
+    msg += `토큰 만료: ${ti.expires_in ? ti.expires_in+'초 후' : '만료됨'}\n`;
+    msg += `토큰 scope: ${ti.scope ? (ti.scope.includes('drive')?'Drive OK':'Drive 없음') : '확인불가'}\n`;
+
+    // Drive 파일 확인
+    const df = await findDriveFile();
+    msg += `Drive 파일: ${df ? '있음 ('+df.id.slice(0,8)+'...)' : '없음 (첫 사용)'}\n`;
+
+    if(df) {
+      const data = await readDriveFile(df.id);
+      msg += `Drive savedDate: ${data.savedDate || '없음'}\n`;
+      msg += `Drive tasks: ${data.tasks ? data.tasks.length+'개' : '없음'}\n`;
+      msg += `Drive lastModified: ${data.lastModified ? new Date(data.lastModified).toLocaleString('ko-KR') : '없음'}\n`;
+    }
+    alert(msg + '\n✅ 진단 완료');
+  } catch(e) {
+    alert(msg + '\n❌ 오류: ' + e.message);
+  }
+}
 setInterval(async()=>{if(accessToken){saveSnapshot();await syncToDrive();}},SYNC_INTERVAL);
 
 // ══════════════════════════════════════════
